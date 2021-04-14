@@ -93,7 +93,7 @@ def home(request):
 #HELLO HAGAGAGAGAFDSFAWTWDASAFA
     
     return render(request,'blog/home.html')
-
+#ASDASDSADASDASDASDADAS
 def task(request):
     # title= {
     #     'title':'About'
