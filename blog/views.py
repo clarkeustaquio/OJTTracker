@@ -90,12 +90,7 @@ def registration_employer(request):
     return render(request, 'blog/registration_employer.html')
 
 def home(request):
-    # dests = List.objects.all()
-    # if request.method == 'GET':
-    #     dests = request.GET['time_spent']
-    #     dests = request.GET['task']
-    #     dests = request.GET['task_type']
-   
+#HELLO HAGAGAGAGAFDSFAWTWDASAFA
     
     return render(request,'blog/home.html')
 
