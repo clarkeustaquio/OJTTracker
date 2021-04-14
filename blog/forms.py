@@ -24,7 +24,7 @@ class ListForm(forms.ModelForm):
             
         }
         
-        
+
     def __init__(self, *args, **kwargs):
         super(ListForm,self).__init__(*args, **kwargs)
         self.fields['task_type'].empty_label ="Task Type"

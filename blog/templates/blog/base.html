@@ -2,9 +2,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="/your-path-to-fontawesome/css/fontawesome.css" rel="stylesheet">
-  <link href="/your-path-to-fontawesome/css/brands.css" rel="stylesheet">
-  <link href="/your-path-to-fontawesome/css/solid.css" rel="stylesheet">
+<style>
+
+img{
+  
+    width: 25%;
+    -webkit-animation: mover 2s infinite  alternate;
+    animation: mover 1s infinite  alternate;
+}
+@-webkit-keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-5px); }
+}
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-5px); }
+}
+</style>
+<!--CHART JS-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.min.js"></script>
   
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
@@ -30,7 +46,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'home' %}">OJT Tracker</a>
+          <img style="width:5%" src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png"><a href="{% url 'home' %}"><h5 class="navbar-brand mr-4 font-weight-bold">OJT Tracker</h5></a>
           
           <button class="navbar-toggler" 
                   type="button" data-toggle="collapse" 
@@ -67,13 +83,7 @@
               </a>
 
               {%else%}
-              {% comment %} <a class="nav-item nav-link" 
-               href="{% url 'login' %}">Login
-              </a>
-
-              <a class="nav-item nav-link" 
-                 href="{% url 'registration_student' %}">Register
-              </a> {% endcomment %}
+       
             {%endif%}
             </div>
           </div>
@@ -86,44 +96,11 @@
         <div class="col">
           {% block content %}
 
-              {% comment %} This is the contents of static pages {% endcomment %}
+          
 
           {% endblock %}
         </div>
-        <!--div class="col">
-          {% comment %} <div class="content-section" > {% endcomment %}
-          <div id="piechart" >
-            <h5 >Status of Work</h5>
-      
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-            <div class="row">
-              <script type="text/javascript">
-              // Load google charts
-              google.charts.load('current', {'packages':['corechart']});
-              google.charts.setOnLoadCallback(drawChart);
-
-              // Draw the chart and set the chart values
-              function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                ['Task', 'Hours per Day'],
-                ['Essential', 8],
-                ['Non-Essential', 2],
-              ]);
-
-                // Optional; add a title and set the width and height of the chart
-                var options = {'title':'Essential and Non Essential Task', 'width':350, 'height':300};
-
-                // Display the chart inside the <div> element with id="piechart"
-                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                chart.draw(data, options);
-              }
-              </script>
-              </div>
-          </div>
-          </div>
-        {% comment %} </div> {% endcomment %}
-      </div-->
+   
     </main>
 
     <!-- Optional JavaScript -->
