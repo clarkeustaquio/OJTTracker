@@ -32,19 +32,47 @@ img{
         <button data-dismiss="modal" class= "btn btn-outline-dark"><i class="fas fa-times "></i></button>
       </div>
       <div class="modal-body">
-       <form action="{% url 'blog_about'%}" method="POST" autocomplete="off">
+
+       <form action="{% url 'blog_about' %}" method="POST" autocomplete="off">
         {% csrf_token %}
           <div class="mb-3">
             {% comment %} <label for="recipient-name" class="col-form-label" style="margin-left:30%">Time Spent:</label> {% endcomment %}
-           <h6 style="margin-left:10%">Time:{{form.start_time}}-{{form.end_time}}</h6>
+           {% comment %} <h6 style="margin-left:10%">Time:{{form.start_time}}-{{form.end_time}}</h6> {% endcomment %}
+           {% comment %} {{ error }} {% endcomment %}
+
+           {% if error != '' %}
+              <h5>{{ error }}</h5>
+           {% endif %}
+           {{ error }}
+           <div class="form-group">
+            <label>Start Time</label>
+            <input type="time" class="form-control" name="start_time" required>
+          </div>
+          <div class="form-group">
+            <label>End Time</label>
+            <input type="time" class="form-control" name="end_time" required>
+          </div>
           </div>
           <div class="mb-3">
-            <label for="message-text" class="col-form-label">What Task Did You Do?:</label>
-            {{form.task}}
+            {% comment %} <label for="message-text" class="col-form-label">What Task Did You Do?:</label>
+            {{form.task}} {% endcomment %}
+          
+            <div class="form-group">
+              <label>What Task Did You Do?</label>
+              <input type="text" class="form-control" name="task" required>
+            </div>
           </div>
            <div class="mb-3">
-            <label for="message-text" class="col-form-label">Type of Task Done:</label>
-             {{form.task_type}}
+            {% comment %} <label for="message-text" class="col-form-label">Type of Task Done:</label>
+             {{form.task_type}} {% endcomment %}
+            <div class="form-group">
+              <label>Type of Task Done:</label>
+              <select name="task_type" class="custom-select" required>
+                {% for type in task_type %}
+                  <option value={{ type }}>{{ type }} </option>
+                {% endfor %}
+              </select>
+            </div>
           </div>
           
       
@@ -89,7 +117,7 @@ img{
     </tr>
   </thead>
   <tbody>
-   {%for task in viewlist %}
+   {%for task in task_list %}
     <tr>
        
          
