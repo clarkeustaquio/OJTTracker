@@ -131,25 +131,25 @@
                    <div class="row register-form">
                                     <div class="col-md-8" style="margin-left:100px" >
                                   <form action="" method="post">
-     {%csrf_token%}
-    <div class="form-group">
-    	<label>Your Username</label>
-        <input name="username" class="form-control" placeholder="Username" type="text">
-    </div> <!-- form-group// -->
-    <div class="form-group">
-    	<a class="float-right" href="#">Forgot?</a>
-    	<label>Your Password</label>
-        <input name="password"class="form-control" placeholder="******" type="password">
-    </div> <!-- form-group// --> 
-    <div class="form-group"> 
-    <div class="checkbox">
-      <label> <input type="checkbox"> Save password </label>
-    </div> <!-- checkbox .// -->
-    </div> <!-- form-group// -->  
-    <div class="form-group">
-       <input type="Submit" class="btn btn-primary btn-block">   
-    </div> <!-- form-group// -->                                                           
-</form>
+                                    {%csrf_token%}
+                                    <div class="form-group">
+                                        <label>Your Email</label>
+                                        <input name="username" class="form-control" placeholder="Email" type="text">
+                                    </div> <!-- form-group// -->
+                                    <div class="form-group">
+                                        <a class="float-right" href="#">Forgot?</a>
+                                        <label>Your Password</label>
+                                        <input name="password"class="form-control" placeholder="******" type="password">
+                                    </div> <!-- form-group// --> 
+                                    <div class="form-group"> 
+                                    <div class="checkbox">
+                                    <label> <input type="checkbox"> Save password </label>
+                                    </div> <!-- checkbox .// -->
+                                    </div> <!-- form-group// -->  
+                                    <div class="form-group">
+                                    <input type="Submit" class="btn btn-primary btn-block">   
+                                    </div> <!-- form-group// -->                                                           
+                                </form>
                                 </div>
                                                 <div>
                                                 {%for message in messages%}

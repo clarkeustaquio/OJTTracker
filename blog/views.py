@@ -19,11 +19,15 @@ def login(request):
         password = request.POST['password']
         
         user = auth.authenticate(username=username,password=password)
-        
         if user is not None:
-            auth.login(request,user)
-            print('login successfully')
-            return redirect('home')
+            if user.is_student:
+
+                auth.login(request,user)
+                print('login successfully')
+                return redirect('home')
+            else:
+                messages.info(request,'invalid credentials')
+                return redirect('/')
         else:
             messages.info(request,'invalid credentials')
             return redirect('/')
@@ -37,32 +41,42 @@ def logindean(request):
         password = request.POST['password']
         
         user = auth.authenticate(username=username,password=password)
-        
+        print(user)
         if user is not None:
-            auth.login(request,user)
-            print('login successfully')
-            return redirect('home')
+            print(user.is_teacher)
+            if user.is_teacher:
+                print(user.is_teacher)
+                auth.login(request,user)
+                print('login successfully')
+                return redirect('home')
+            else:
+                messages.info(request,'invalid credentials')
+                return redirect('/logindean')
         else:
             messages.info(request,'invalid credentials')
-            return redirect('/')
+            return redirect('/logindean')
     else:
         return render(request, 'blog/logindean.html')
 
 def loginemployer(request):
     if request.method =='POST':
         username = request.POST['username']
-        
         password = request.POST['password']
         
         user = auth.authenticate(username=username,password=password)
         
         if user is not None:
-            auth.login(request,user)
-            print('login successfully')
-            return redirect('home')
+            if user.is_employee:
+
+                auth.login(request,user)
+                print('login successfully')
+                return redirect('/employee-home')
+            else:
+                messages.info(request,'invalid credentials')
+                return redirect('/loginemployer')
         else:
             messages.info(request,'invalid credentials')
-            return redirect('/')
+            return redirect('/loginemployer')
     else:
         return render(request, 'blog/loginemployer.html')
 
@@ -70,22 +84,44 @@ def registration_student(request):
     if request.method == 'POST':
         first_name= request.POST['first_name']
         last_name= request.POST['last_name']
-        username= request.POST['username']
+        employee_email = request.POST['employee_email']
         password1= request.POST['password1']
         password2= request.POST['password2']
         email= request.POST['email']
+
         if password1==password2:
-            if CustomUser.objects.filter(username=username).exists():
+            if CustomUser.objects.filter(username=email).exists():
                 messages.info(request,'Username Taken')
                 return redirect('registration_student')
             elif CustomUser.objects.filter(email=email).exists():
                 messages.info(request,'Email Taken')
                 return redirect('registration_student')
             else:
-                user = CustomUser.objects.create_user(username=username, password=password1, email=email, first_name=first_name,last_name=last_name)
-                user.save()
-                messages.info(request,'User Created!')
-                return redirect('/')
+                try:
+                    employee = CustomUser.objects.get(email=employee_email)
+                except CustomUser.DoesNotExist:
+                    messages.info(request,'Invalid employer email')
+                    return redirect('registration_student')
+                else:
+                    if employee.is_employee:
+                        user = CustomUser.objects.create_user(
+                            username=email, 
+                            password=password1, 
+                            email=email,
+                            first_name=first_name,
+                            last_name=last_name,
+                            my_employee=employee    
+                        )
+                        user.is_student = True
+                        user.save()
+
+                        employee.employer_student.add(user)
+                        messages.info(request,'User Created!')
+
+                        return redirect('/')
+                    else:
+                        messages.info(request,'Invalid employer email')
+                        return redirect('registration_student')
         else:
             messages.info(request,'Password not matching!')
         return redirect('registration_student')
@@ -93,10 +129,96 @@ def registration_student(request):
         return render(request, 'blog/registration_student.html')
 
 def registration_dean(request):
-    return render(request, 'blog/registration_dean.html')
+    if request.method == 'POST':
+        first_name= request.POST['first_name']
+        last_name= request.POST['last_name']
+        password1= request.POST['password1']    
+        password2= request.POST['password2']
+        email= request.POST['email']
+        phone = request.POST['phone']
+        question = request.POST['question']
+        answer = request.POST['answer']
+        gender = request.POST['gender']
+
+        if password1==password2:
+            if CustomUser.objects.filter(username=email).exists():
+                messages.info(request,'Email Taken')
+                return redirect('registration_dean')
+            elif CustomUser.objects.filter(email=email).exists():
+                messages.info(request,'Email Taken')
+                return redirect('registration_dean')
+            else:
+                is_male = False
+                if gender == 'male':
+                    is_male = True
+
+                user = CustomUser.objects.create_user(
+                    username=email, 
+                    password=password1, 
+                    email=email, 
+                    first_name=first_name,
+                    last_name=last_name,
+                    phone=phone,
+                    question=question,
+                    answer=answer,
+                    is_male=is_male
+                )
+                user.is_teacher = True
+                user.save()
+                messages.info(request,'User Created!')
+                return redirect('/')
+        else:
+            messages.info(request,'Password not matching!')
+        return redirect('registration_dean')
+    else:
+        return render(request, 'blog/registration_dean.html')
 
 def registration_employer(request):
-    return render(request, 'blog/registration_employer.html')
+    if request.method == 'POST':
+        first_name= request.POST['first_name']
+        last_name= request.POST['last_name']
+        password1= request.POST['password1']
+        password2= request.POST['password2']
+        email= request.POST['email']
+        phone = request.POST['phone']
+        question = request.POST['question']
+        answer = request.POST['answer']
+        gender = request.POST['gender']
+
+        if password1 == password2:
+            if CustomUser.objects.filter(username=email).exists():
+                messages.info(request,'Email Taken')
+                return redirect('registration_employer')
+            elif CustomUser.objects.filter(email=email).exists():
+                messages.info(request,'Email Taken')
+                return redirect('registration_employer')
+            else:
+                is_male = False
+                if gender == 'male':
+                    is_male = True
+
+                employer = CustomUser.objects.create_user(
+                    username=email, 
+                    password=password1, 
+                    email=email, 
+                    first_name=first_name,
+                    last_name=last_name,
+                    phone=phone,
+                    question=question,
+                    answer=answer,
+                    is_male=is_male
+                )
+                employer.is_employee = True
+                employer.save()
+                messages.info(request,'User Created!')
+                
+                return redirect('/')
+        else:
+            messages.info(request,'Password not matching!')
+        return redirect('registration_employer')
+    else:
+        return render(request, 'blog/registration_employer.html')
+    
 
 @login_required
 def home(request):
@@ -162,18 +284,17 @@ def home(request):
 
 @login_required
 def task(request):
-    # task_type = Task_type.objects.all()
-    task_list = TaskList.objects.all()
-
     task_type = [
         'Essential',
         'Non-Essential'
     ]
 
     error = 'Invalid Date'
+
     username = request.user.username
     user = CustomUser.objects.get(username=username)
-    
+    task_list = TaskList.objects.filter(user=user)
+
     if request.method =='POST':     
         # if request.POST['start_time'] < request.POST['end_time']:
         #     return render(request, 'blog/about.html', {
@@ -221,3 +342,31 @@ def delete_list_item(request,list_id):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+
+# Employer
+@login_required
+def employee_home(request):
+    if request.method == 'GET':
+        username = request.user.username
+
+        user = CustomUser.objects.get(username=username)
+        print(user.employee_students)
+        return render(request, 'blog/employee_home.html')
+
+@login_required
+def employee_pending(request):
+    if request.method == 'GET':
+        username = request.user.username
+
+        user = CustomUser.objects.get(username=username)
+        students = user.employer_student.all()
+        
+        context = {
+            'students': students
+        }
+        return render(
+            request, 
+            'blog/employee_pending.html',
+            context
+        )

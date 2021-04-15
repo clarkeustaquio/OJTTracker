@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<<<<<<< HEAD
 <style>
 
 img{
@@ -22,12 +21,6 @@ img{
 </style>
 <!--CHART JS-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.min.js"></script>
-=======
-{% comment %} <link href="/your-path-to-fontawesome/css/fontawesome.css" rel="stylesheet">
-  <link href="/your-path-to-fontawesome/css/brands.css" rel="stylesheet">
-  <link href="/your-path-to-fontawesome/css/solid.css" rel="stylesheet"> {% endcomment %}
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
->>>>>>> 6269c3b9866b11d6e6b2de07de5ace67cd08e592
   
 {% comment %} <script src="https://use.fontawesome.com/432cc521ea.js"></script> {% endcomment %}
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -71,16 +64,41 @@ img{
           <div class="collapse navbar-collapse" 
                 id="navbarToggle">
 
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" 
-                 href="{% url 'home' %}">Dashboard
-              </a>
+            {% if request.user.is_student %}
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" 
+                  href="{% url 'home' %}">Dashboard
+                </a>
 
-              <a class="nav-item nav-link" 
-                 href="{% url 'blog_about' %}">Task List
-              </a>
+                <a class="nav-item nav-link" 
+                  href="{% url 'blog_about' %}">Task List
+                </a>
+              </div>
+            {% endif %}
 
-            </div>
+            {% if request.user.is_teacher %}
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" 
+                  href="{% url 'home' %}">Student Dashboard
+                </a>
+
+                <a class="nav-item nav-link" 
+                  href="{% url 'blog_about' %}">Manage Student
+                </a>
+              </div>
+            {% endif %}
+
+            {% if request.user.is_employee %}
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" 
+                  href="{% url 'employee_home' %}">Student Dashboard
+                </a>
+
+                <a class="nav-item nav-link" 
+                  href="{% url 'employee_pending' %}">Pending Task
+                </a>
+              </div>
+            {% endif %}
             <!-- Navbar Right Side -->
            
 

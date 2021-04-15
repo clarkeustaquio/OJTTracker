@@ -16,6 +16,9 @@ urlpatterns = [
     path('delete_list/<int:list_id>/',views.delete_list_item, name='delete_list_item'),
     # path()
     
+
+    path('employee-home/', views.employee_home, name='employee_home'),
+    path('employee-pending/', views.employee_pending, name='employee_pending')
     
 ]
 
