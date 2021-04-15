@@ -14,6 +14,9 @@ urlpatterns = [
     path('task', views.task, name='blog_about'),
     path('logout', views.logout, name ='logout'),
     path('delete_list/<int:list_id>/',views.delete_list_item, name='delete_list_item'),
+    path('employer_dashboard',views.employer_dashboard, name='employer_dashboard'),
+    path('employer_task',views.employer_task, name='employer_task')
+    
     # path()
     
     

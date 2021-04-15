@@ -98,6 +98,13 @@ def registration_dean(request):
 def registration_employer(request):
     return render(request, 'blog/registration_employer.html')
 
+def employer_dashboard(request):
+    print('yes')
+    return render(request, 'blog/employer_dashboard.html')
+
+def employer_task(request):
+    return render(request, 'blog/employer_task.html')
+
 @login_required
 def home(request):
     user = CustomUser.objects.get(username=request.user.username)
@@ -159,6 +166,8 @@ def home(request):
         'essential_hour': essential_hour,
         'non_essential_hour': non_essential_hour
     })
+    
+
 
 @login_required
 def task(request):
@@ -213,6 +222,12 @@ def task(request):
             'task_type': task_type,
         })
     
+    
+    
+
+    
+
+
 def delete_list_item(request,list_id):
     list_to_delete=TaskList.objects.get(pk=list_id)
     list_to_delete.delete()
@@ -221,3 +236,4 @@ def delete_list_item(request,list_id):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+

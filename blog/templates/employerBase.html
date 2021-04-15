@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!--STUDENT BASE-->
+<!--Employer BASE-->
 <style>
 
 img{
@@ -57,7 +57,7 @@ img{
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <img style="width:5%" src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png"><a href="{% url 'home' %}"><h5 class="navbar-brand mr-4 font-weight-bold">OJT Tracker</h5></a>
+          <img style="width:5%" src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png"><a href="{% url 'employerDashboard' %}"><h5 class="navbar-brand mr-4 font-weight-bold">OJT Tracker</h5></a>
           
           <button class="navbar-toggler" 
                   type="button" data-toggle="collapse" 
@@ -73,11 +73,11 @@ img{
 
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" 
-                 href="{% url 'home' %}">Dashboard
+                 href="{% url 'employer_dashboard' %}">Dashboard
               </a>
 
               <a class="nav-item nav-link" 
-                 href="{% url 'blog_about' %}">Task List
+                 href="{% url 'employer_task' %}">Task Validation
               </a>
 
             </div>
@@ -87,7 +87,7 @@ img{
             <div class="navbar-nav">
               {% if user.is_authenticated %}
                <a class="nav-item nav-link" >
-               Hello, {{user.first_name}}
+               Hello, {{user.first_name}} <!--This should be name of employer-->
               </a>
               <a class="nav-item nav-link" 
                href="{% url 'logout' %}">Logout

@@ -21,18 +21,18 @@ class ListForm(forms.ModelForm):
               
         #     'task' : forms.TextInput(attrs={'placeholder':'What Task You did?' ,'style':'width:470px'}),
         #     'task_type':forms.Select(attrs={'style':'width:470px'}),
-         
+        
             
         # }
         
-<<<<<<< HEAD
+
 
     def __init__(self, *args, **kwargs):
         super(ListForm,self).__init__(*args, **kwargs)
         self.fields['task_type'].empty_label ="Task Type"
-=======
+
         
     # def __init__(self, *args, **kwargs):
     #     super(ListForm,self).__init__(*args, **kwargs)
     #     self.fields['task_type'].empty_label ="Task Type"
->>>>>>> 6269c3b9866b11d6e6b2de07de5ace67cd08e592
+
