@@ -3,6 +3,7 @@
 
 {%block content%}
 <style>
+<<<<<<< HEAD
 
 </style>
           {% if user.is_authenticated %}
@@ -825,9 +826,198 @@ options:{
             
     }
     });
+=======
+canvas{
+
+  width:1000px !important;
+  height:500px !important;
+
+}
+</style>
+   
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <canvas id="total_hour"></canvas>
+            </div>
+            <div class="col">
+                <canvas id="essensial_nonessential"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <canvas id="essential_hour"></canvas>
+            </div>
+            <div class="col">
+                <canvas id="nonessential_hour"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+>>>>>>> 6269c3b9866b11d6e6b2de07de5ace67cd08e592
 
 
+<script>
+    var hours = "{{ total_hour }}"
+    var total_hour = document.getElementById('total_hour').getContext('2d');
+    var myChart = new Chart(total_hour, {
+        type: 'bar',
+        data: {
+            labels: ['Hours'],
+            datasets: [{
+                label: 'Total Hours',
+                data: [hours],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 
+<<<<<<< HEAD
 </script>
 {% comment %} UPDATE {% endcomment %}
+=======
+    var essential = "{{ essential }}"
+    var non_essential = "{{ non_essential }}"
+    var essensial_nonessential = document.getElementById('essensial_nonessential').getContext('2d');
+    var myChart = new Chart(essensial_nonessential, {
+        type: 'bar',
+        data: {
+            labels: ['Essential', 'Non-Essential'],
+            datasets: [{
+                label: 'Essential and Non-Essential',
+                data: [essential, non_essential],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    var essential_hour_count = "{{ essential_hour }}"
+    var essential_hour = document.getElementById('essential_hour').getContext('2d');
+    var myChart = new Chart(essential_hour, {
+        type: 'bar',
+        data: {
+            labels: ['Essential Hour'],
+            datasets: [{
+                label: 'Essential Hours',
+                data: [essential_hour_count],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    var nonessential_hour_count = "{{ non_essential_hour }}"
+    var nonessential_hour = document.getElementById('nonessential_hour').getContext('2d');
+    var myChart = new Chart(nonessential_hour, {
+        type: 'bar',
+        data: {
+            labels: ['Non-Essential Hour'],
+            datasets: [{
+                label: 'Non-Essential Hours',
+                data: [nonessential_hour_count],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+</script>
+{% comment %} TESTING POTANGINA GUMANAKANA  {% endcomment %}
+  
+>>>>>>> 6269c3b9866b11d6e6b2de07de5ace67cd08e592
 {% endblock content %} 
