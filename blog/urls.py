@@ -19,13 +19,27 @@ urlpatterns = [
     # path()
     
 
+    # Employer
     path('employee-home/', views.employee_home, name='employee_home'),
     path('employee-pending/', views.employee_pending, name='employee_pending'),
+<<<<<<< HEAD
     path('employee_report/', views.employee_report, name = 'employee_report'),
     
     
     path('teacher_home/',views.teacher_home, name='teacher_home'),
     path('teacher_manage',views.teacher_manage,name='teacher_manage')
+=======
+
+    # Approve Student
+    path('approve-student/<int:student_id>/', views.approve_student, name='approve_student'),
+    
+    # Instructor
+    path('instructor-home/', views.teacher_home, name='teacher_home'),
+    path('instructor-manage/', views.teacher_manage, name='teacher_manage'),
+
+    # Send reqeust
+    path('send-request/', views.send_request, name='send_request')
+>>>>>>> 6f8f0cb156bcb0a6100f392a9e3a3e0f535538c3
 ]
 
 

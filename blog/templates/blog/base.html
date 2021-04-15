@@ -57,7 +57,17 @@ img{
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
+        {% if request.user.is_student %}
           <img style="width:5%" src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png"><a href="{% url 'home' %}"><h5 class="navbar-brand mr-4 font-weight-bold">OJT Tracker</h5></a>
+        {% endif %}
+
+        {% if request.user.is_teacher %}
+          <img style="width:5%" src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png"><a href="{% url 'teacher_home' %}"><h5 class="navbar-brand mr-4 font-weight-bold">OJT Tracker</h5></a>
+        {% endif %}
+
+        {% if request.user.is_employee %}
+          <img style="width:5%" src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png"><a href="{% url 'employee_home' %}"><h5 class="navbar-brand mr-4 font-weight-bold">OJT Tracker</h5></a>
+        {% endif %}
           
           <button class="navbar-toggler" 
                   type="button" data-toggle="collapse" 
@@ -86,7 +96,11 @@ img{
             {% if request.user.is_teacher %}
               <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link" 
+<<<<<<< HEAD
                   href="{% url 'teacher_home' %}">Dashboard
+=======
+                  href="{% url 'teacher_home' %}">Student Dashboard
+>>>>>>> 6f8f0cb156bcb0a6100f392a9e3a3e0f535538c3
                 </a>
 
                 <a class="nav-item nav-link" 
@@ -106,7 +120,11 @@ img{
                 </a>
 
                 <a class="nav-item nav-link" 
+<<<<<<< HEAD
                   href="{% url 'employee_report' %}">Report
+=======
+                  href="{% url 'employee_pending' %}">Pending Students
+>>>>>>> 6f8f0cb156bcb0a6100f392a9e3a3e0f535538c3
                 </a>
                
               </div>

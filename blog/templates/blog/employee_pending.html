@@ -14,14 +14,23 @@
             
             <tbody class="text-center">
                 {% for student in students %}
+<<<<<<< HEAD
                 
                     {% if student.is_student_approve == None %}
+=======
+                    {% if not student.is_student_approve %}
+>>>>>>> 6f8f0cb156bcb0a6100f392a9e3a3e0f535538c3
                         <tr>
                             <th>{{ student.first_name }}</th>
                             <td>{{ student.last_name }}</td>
                             <td>{{ student.username }}</td>
                             <td>
-                                <button type="button" class="btn btn-primary">Approve</button>
+                                <form action="{% url 'approve_student' student.id %}" method="POST">
+                                    {%csrf_token%}
+                                    <button type="submit" class="btn btn-primary">
+                                        Approve
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         
@@ -40,7 +49,7 @@
 
                 {% endfor %}
             </tbody>
-            </table>
+        </table>
   
 
 {% endblock content%}

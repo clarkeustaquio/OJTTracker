@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<<<<<<< HEAD
 <style>
 
 </style>
@@ -11,6 +12,17 @@
               </a>
              {%else%}
             {%endif%}
+=======
+    {% for student in students %}
+        {% if student.is_student_approve %}
+            <h1>Dashboard</h1>
+            {{ student.first_name }}
+            {{ student.last_name }}
+            {{ student.username }}
+            <hr></hr>
+        {% endif %}
+    {% endfor %}
+>>>>>>> 6f8f0cb156bcb0a6100f392a9e3a3e0f535538c3
 
 
 <!---->
