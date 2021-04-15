@@ -17,9 +17,19 @@ urlpatterns = [
     # path()
     
 
+    # Employer
     path('employee-home/', views.employee_home, name='employee_home'),
-    path('employee-pending/', views.employee_pending, name='employee_pending')
+    path('employee-pending/', views.employee_pending, name='employee_pending'),
+
+    # Approve Student
+    path('approve-student/<int:student_id>/', views.approve_student, name='approve_student'),
     
+    # Instructor
+    path('instructor-home/', views.teacher_home, name='teacher_home'),
+    path('instructor-manage/', views.teacher_manage, name='teacher_manage'),
+
+    # Send reqeust
+    path('send-request/', views.send_request, name='send_request')
 ]
 
 

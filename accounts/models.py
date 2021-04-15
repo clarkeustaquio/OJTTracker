@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
     my_teacher = models.ForeignKey("self", blank=True, null=True, on_delete=models.CASCADE, related_name="student_teacher")
     my_employee = models.ForeignKey("self", blank=True, null=True, on_delete=models.CASCADE, related_name="student_employee")
 
-    pending_teacher = models.BooleanField(default=False)
+    
     pending_employee = models.BooleanField(default=False)
 
     # Teacher & Employee
@@ -23,8 +23,12 @@ class CustomUser(AbstractUser):
     answer = models.CharField(max_length=250, null=True, blank=True)
 
     # Student - Employee
-    is_student_approvee = models.BooleanField(default=False)
+    is_student_approve = models.BooleanField(default=False)
     employer_student = models.ManyToManyField("self", blank=True)
+
+    # Teacher - Student
+    pending_teacher = models.BooleanField(default=False)
+    accept_teacher = models.BooleanField(default=False)
 
 
 

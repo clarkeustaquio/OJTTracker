@@ -2,7 +2,14 @@
 
 {% block content %}
 
-
-asdasdada
+    {% for student in students %}
+        {% if student.is_student_approve %}
+            <h1>Dashboard</h1>
+            {{ student.first_name }}
+            {{ student.last_name }}
+            {{ student.username }}
+            <hr></hr>
+        {% endif %}
+    {% endfor %}
 
 {% endblock content%}

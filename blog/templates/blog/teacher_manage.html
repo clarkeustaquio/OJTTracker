@@ -1,0 +1,22 @@
+{% extends "blog/base.html"%}
+
+{% block content %}
+    
+    {% if students|length > 0 %}
+        <form action="{% url 'send_request' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Students</label>
+                <select class="form-control" name="student">
+                    {% for student in students %}
+                        <option value={{ student.id }}>{{ student.last_name }}, {{ student.first_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Request</button>
+        </form>
+    {% else%}
+        <h5>Empty students.</h5>
+    {% endif %}
+
+{% endblock content%}
