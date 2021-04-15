@@ -71,16 +71,46 @@ img{
           <div class="collapse navbar-collapse" 
                 id="navbarToggle">
 
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" 
-                 href="{% url 'home' %}">Dashboard
-              </a>
+            {% if request.user.is_student %}
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" 
+                  href="{% url 'home' %}">Dashboard
+                </a>
 
-              <a class="nav-item nav-link" 
-                 href="{% url 'blog_about' %}">Task List
-              </a>
+                <a class="nav-item nav-link" 
+                  href="{% url 'blog_about' %}">Task List
+                </a>
+              </div>
+            {% endif %}
 
-            </div>
+            {% if request.user.is_teacher %}
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" 
+                  href="{% url 'teacher_home' %}">Dashboard
+                </a>
+
+                <a class="nav-item nav-link" 
+                  href="{% url 'teacher_manage' %}">Manage Student
+                </a>
+              </div>
+            {% endif %}
+
+            {% if request.user.is_employee %}
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" 
+                  href="{% url 'employee_home' %}">Dashboard
+                </a>
+
+                <a class="nav-item nav-link" 
+                  href="{% url 'employee_pending' %}">Pending Students
+                </a>
+
+                <a class="nav-item nav-link" 
+                  href="{% url 'employee_report' %}">Report
+                </a>
+               
+              </div>
+            {% endif %}
             <!-- Navbar Right Side -->
            
 

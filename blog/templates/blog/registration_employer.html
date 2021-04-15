@@ -129,21 +129,21 @@
                                 <h3 class="register-heading">Apply as an Employer</h3>
                                 <div class="row register-form">
                                     <div class="col-md-6">
-                                    <form action="registration_student" method="post">
+                                    <form action="registration_employer" method="post">
                                             {% csrf_token %}
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="First Name *" value="" required/>
+                                            <input name="first_name" type="text" class="form-control" placeholder="First Name *" value="" required/>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Last Name *" value="" required/>
+                                            <input name="last_name" type="text" class="form-control" placeholder="Last Name *" value="" required/>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="Password *" value="" required/>
+                                            <input name="password1" type="password" class="form-control" placeholder="Password *" value="" required/>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control"  placeholder="Confirm Password *" value="" required/>
+                                            <input name="password2" type="password" class="form-control"  placeholder="Confirm Password *" value="" required/>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" name="gender">
                                             <div class="maxl">
                                                 <label class="radio inline"> 
                                                     <input type="radio" name="gender" value="male" checked>
@@ -158,13 +158,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" placeholder="Your Email *" value="" />
+                                            <input name="email" type="email" class="form-control" placeholder="Your Email *" value="" />
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" minlength="10" maxlength="10" name="txtEmpPhone" class="form-control" placeholder="Your Phone *" value="" />
+                                            <input name="phone" type="text" minlength="10" maxlength="10" class="form-control" placeholder="Your Phone *" value="" />
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-control">
+                                            <select class="form-control" name="question">
                                                 <option class="hidden"  selected disabled>Please select your Sequrity Question</option>
                                                 <option>What is your Birthdate?</option>
                                                 <option>What is Your old Phone Number</option>
@@ -172,7 +172,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Enter Your Answer *" value="" />
+                                            <input name="answer" type="text" class="form-control" placeholder="Enter Your Answer *" value="" />
                                         </div>
                                         <input type="submit" class="btnRegister"  value="Register"/>
                                     </div>

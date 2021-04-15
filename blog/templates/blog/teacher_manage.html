@@ -1,0 +1,58 @@
+ {% extends "blog/base.html"%}
+
+{% block content %}
+<style> 
+input[type=text] {
+  width: 20%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  {% comment %} background-repeat: no-repeat; {% endcomment %}
+  padding: -3px 10px 6px 20px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+  width: 30%;
+}
+
+</style>
+
+<form>
+<i class="fas fa-search"></i><input type="text" name="search" placeholder="Search..">
+  
+</form>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Student #</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Email</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Joruel</td>
+      <td>Brana</td>
+      <td>Joruel@gmail.com</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Clark</td>
+      <td>Eustaquio</td>
+      <td>Clark@gmail.com</td>
+      <td>--</td>
+    </tr>
+  
+  
+  </tbody>
+</table>
+
+{% endblock content%}
