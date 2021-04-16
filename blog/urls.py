@@ -45,7 +45,8 @@ urlpatterns = [
     path('success-employee-approve/<uid>/<token>/', views.success_employee_approval, name='success_employee_approval'),
 
     # Dashboard
-    path('view-student-dashboard/<int:id>/', views.view_student_dashboard, name='view_student_dashboard')
+    path('view-student-dashboard/<int:id>/', views.view_student_dashboard, name='view_student_dashboard'),
+    path('view-employee-student-dashboard/<int:id>/', views.view_employee_student_dashboard, name='view_employee_student_dashboard')
 ]
 
 

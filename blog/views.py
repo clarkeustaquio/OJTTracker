@@ -609,3 +609,59 @@ def view_student_dashboard(request, id):
             'blog/student_teacher_dashboard.html',
             context
         )
+
+def view_employee_student_dashboard(request, id):
+    username = request.user.username
+
+    user = CustomUser.objects.get(username=username)
+
+    if user.is_employee:
+        if request.method == 'POST':
+            student_id = id
+            student = CustomUser.objects.get(id=student_id)
+            task_list = TaskList.objects.filter(user=student)
+            
+            hours = 0
+            essential = 0
+            non_essential = 0
+
+            essential_hour = 0
+            non_essential_hour = 0
+            for task in task_list:
+                start_time = task.start_time
+                end_time = task.end_time
+
+        
+                if end_time > start_time:
+                    time_spent = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
+                    total_time_spent = time_spent.total_seconds()
+
+                    hour = int(total_time_spent // 3600)
+                    hours += hour
+
+                    if task.task_type == 'Essential':
+                        essential += 1
+                        essential_hour += hour
+                    elif task.task_type == 'Non-Essential':
+                        non_essential += 1
+                        non_essential_hour += hour
+
+            context = {
+                'student': student.first_name.title(),
+                'total_hour': hours,
+                'essential': essential,
+                'non_essential': non_essential,
+                'essential_hour': essential_hour,
+                'non_essential_hour': non_essential_hour
+            }
+            return render(
+                request, 
+                'blog/student_employee_dashboard.html',
+                context
+            )
+    else:
+        if request.user.is_teacher:
+            return redirect('/instructor-home')
+        
+        if request.user.is_student:
+            return redirect('/home')
