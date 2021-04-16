@@ -10,7 +10,14 @@ from accounts.models import CustomUser
 
 from .forms import ListForm
 
+from .services.teacher_request import teacher_request, account_activation_token
 
+# For email 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_text
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 def login(request):
     if request.method =='POST':
@@ -270,16 +277,14 @@ def home(request):
         })
     else:
         if request.user.is_teacher:
-            return redirect('instructor-home/')
+            return redirect('/instructor-home')
         
         if request.user.is_employee:
-            return redirect('employee-home/')
+            return redirect('/employee-home')
 
 @login_required
 def task(request):
-
-    if request.user.is_student:
-
+    if request.user.is_student or request.user.is_staff:
         task_type = [
             'Essential',
             'Non-Essential'
@@ -331,10 +336,10 @@ def task(request):
             })
     else:
         if request.user.is_teacher:
-            return redirect('instructor-home/')
+            return redirect('/instructor-home')
         
         if request.user.is_employee:
-            return redirect('employee-home/')
+            return redirect('/employee-home')
     
 def delete_list_item(request,list_id):
     list_to_delete=TaskList.objects.get(pk=list_id)
@@ -466,4 +471,31 @@ def send_request(request):
             student.my_teacher = teacher
             student.pending_teacher = True
             student.save()
+
+            teacher_request(
+                email_to=student.email,
+                name=student.first_name.title(),
+                user_pk=student.pk,
+                user=student
+            )
+
             return redirect('/instructor-manage')
+
+def success_teacher_approval(request, uid, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uid))
+    except ValueError as e:
+        return render(request, 'errors/teacher_approval_failed.html')
+    else:
+        try:
+            user = CustomUser.objects.get(pk=uid)
+        
+        except ValueError as e:
+            return render(request, 'errors/teacher_approval_failed.html')
+        else:
+            if user is not None and account_activation_token.check_token(user, token):
+                user.accept_teacher = True
+                user.save()
+                return render(request, 'success/teacher_approval_success.html')
+            else:
+                return render(request, 'errors/teacher_approval_failed.html')

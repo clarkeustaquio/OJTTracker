@@ -29,7 +29,10 @@ urlpatterns = [
     path('instructor-manage/', views.teacher_manage, name='teacher_manage'),
 
     # Send reqeust
-    path('send-request/', views.send_request, name='send_request')
+    path('send-request/', views.send_request, name='send_request'),
+
+    # Success
+    path('success-teacher-approve/<uid>/<token>/', views.success_teacher_approval, name='success_teacher_approval')
 ]
 
 
