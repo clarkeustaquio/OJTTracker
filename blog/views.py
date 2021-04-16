@@ -292,7 +292,6 @@ def task(request):
             'Non-Essential'
         ]
 
-<<<<<<< HEAD
     return render(request,'blog/home.html', {
         'total_hour': hours,
         'essential': essential,
@@ -302,9 +301,6 @@ def task(request):
     })
     
 
-=======
-        error = 'Invalid Date'
->>>>>>> 6f8f0cb156bcb0a6100f392a9e3a3e0f535538c3
 
         username = request.user.username
         user = CustomUser.objects.get(username=username)
@@ -447,7 +443,6 @@ def teacher_home(request):
         if request.user.is_employee:
             return redirect('/employee-home')
         
-<<<<<<< HEAD
         context = {
             'students': students
         }
@@ -480,49 +475,3 @@ def teacher_home(request):
 def teacher_manage(request):
     return render(request,'blog/teacher_manage.html')
 
-=======
-        if request.user.is_student:
-            return redirect('/home')
-            
-@login_required
-def teacher_manage(request):
-    if request.user.is_teacher:
-        if request.method == 'GET':
-            username = request.user.username
-            
-            students = CustomUser.objects.filter(
-                is_student=True, accept_teacher=False, pending_teacher=False)
-            # user = CustomUser.objects.get(username=username)
-            # students = user.employer_student.all()
-            
-            context = {
-                'students': students
-            }
-            return render(
-                request, 
-                'blog/teacher_manage.html',
-                context
-            )
-    else:
-        if request.user.is_employee:
-            return redirect('/employee-home')
-        
-        if request.user.is_student:
-            return redirect('/home')
-
-def send_request(request):
-    user = request.user.username
-    if request.method == 'POST':
-        print(request.POST)
-        student_id = request.POST['student']
-        try:
-            student = CustomUser.objects.get(id=student_id)
-        except CustomUser.DoesNotExist:
-            return redirect('/instructor-manage')
-        else:
-            teacher = CustomUser.objects.get(username=user)
-            student.my_teacher = teacher
-            student.pending_teacher = True
-            student.save()
-            return redirect('/instructor-manage')
->>>>>>> 6f8f0cb156bcb0a6100f392a9e3a3e0f535538c3
