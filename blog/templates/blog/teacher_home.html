@@ -5,7 +5,15 @@
 
 {% for student in students %}
   <ul class="list-group">
-    <li class="list-group-item list-group-item-action">{{ student }}</li>
+    <li class="list-group-item list-group-item-action">
+    <span class="float-left">{{ student }}</span>
+    <span class="float-right">
+      <form action="{% url 'view_student_dashboard' student.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">View Dashboard</button>
+      </form>
+    </span>
+    </li>
   </ul> 
 {% endfor %}
   
