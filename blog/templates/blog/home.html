@@ -1,13 +1,13 @@
 {%extends "blog/base.html"%}
-
+<!--STUDENT DASHBOARD-->
 
 {%block content%}
-<style>
 
-</style>
+
+
           {% if user.is_authenticated %}
                <a class="nav-item nav-link" >
-                <h4>{{user.first_name}}'s Dashboard</h4>
+                <h4>{{user.first_name}}'s Dashboard </h4>
               </a>
              {%else%}
             {%endif%}
@@ -831,5 +831,9 @@ options:{
     }
     });
 
-{% comment %} UPDATE {% endcomment %}
+
+
+
+</script>
+
 {% endblock content %} 

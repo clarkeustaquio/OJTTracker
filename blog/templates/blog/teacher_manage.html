@@ -1,20 +1,59 @@
-{% extends "blog/base.html"%}
+ {% extends "blog/base.html"%}
 
 {% block content %}
-    
-    {% if students|length > 0 %}
-        <form action="{% url 'send_request' %}" method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label>Students</label>
-                <select class="form-control" name="student">
-                    {% for student in students %}
-                        <option value={{ student.id }}>{{ student.last_name }}, {{ student.first_name}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Send Request</button>
-        </form>
+<style> 
+input[type=text] {
+  width: 20%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  {% comment %} background-repeat: no-repeat; {% endcomment %}
+  padding: -3px 10px 6px 20px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+  width: 30%;
+}
+
+</style>
+
+<form>
+  <i class="fas fa-search"></i><input type="text" name="search" placeholder="Search..">
+</form>
+
+  {% if students|length > 0 %}
+    <table class="table mt-4">
+      <thead class="text-center">
+        <tr>
+          <th scope="col">Student #</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Email</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+      {% for student in students %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.first_name}}</td>
+            <td>{{ student.last_name }}</td>
+            <td>{{ student.email }}</td>
+            <td>
+              <form action="{% url 'send_request' student.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Send Request</button>
+            </form>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+        
     {% else%}
         <h5>Empty students.</h5>
     {% endif %}

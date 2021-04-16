@@ -1,0 +1,11 @@
+ {% extends "blog/base.html"%}
+
+{% block content %}
+  {% for student in students %}
+    {% if student.is_student_approve %}
+      <li class="list-group-item list-group-item-action">{{ student }}</li>
+    {% endif %}
+    {% empty %}
+      <h5>Empty Students</h5>
+  {% endfor %}
+{% endblock content%}

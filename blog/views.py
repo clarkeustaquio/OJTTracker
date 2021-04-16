@@ -11,6 +11,7 @@ from accounts.models import CustomUser
 from .forms import ListForm
 
 from .services.teacher_request import teacher_request, account_activation_token
+from .services.employee_request import employee_request
 
 # For email 
 from django.core.mail import send_mail
@@ -123,6 +124,13 @@ def registration_student(request):
                         user.save()
 
                         employee.employer_student.add(user)
+
+                        employee_request(    
+                            email_to=employee.email,
+                            name=employee.first_name.title(),
+                            user_pk=user.pk,
+                            user=user
+                        )
                         messages.info(request,'User Created!')
 
                         return redirect('/')
@@ -227,6 +235,13 @@ def registration_employer(request):
         return render(request, 'blog/registration_employer.html')
     
 
+def employer_dashboard(request):
+    print('yes')
+    return render(request, 'blog/employer_dashboard.html')
+
+def employer_task(request):
+    return render(request, 'blog/employer_task.html')
+
 @login_required
 def home(request):
 
@@ -284,7 +299,9 @@ def home(request):
 
 @login_required
 def task(request):
-    if request.user.is_student or request.user.is_staff:
+
+    if request.user.is_student:
+
         task_type = [
             'Essential',
             'Non-Essential'
@@ -336,11 +353,12 @@ def task(request):
             })
     else:
         if request.user.is_teacher:
-            return redirect('/instructor-home')
+            return redirect('instructor-home/')
         
         if request.user.is_employee:
-            return redirect('/employee-home')
+            return redirect('employee-home/')
     
+
 def delete_list_item(request,list_id):
     list_to_delete=TaskList.objects.get(pk=list_id)
     list_to_delete.delete()
@@ -349,7 +367,6 @@ def delete_list_item(request,list_id):
 def logout(request):
     auth.logout(request)
     return redirect('/')
-
 
 # Employer
 @login_required
@@ -410,27 +427,49 @@ def approve_student(request ,student_id):
         student.is_student_approve = True
         student.save()
         return redirect('/employee-pending')
-    
+        
+@login_required
+def employee_report(request): #Pending approval ng report summary
+    if request.method == 'GET':
+        username = request.user.username
+
+        user = CustomUser.objects.get(username=username)
+        students = user.employer_student.all()
+
+        context = {
+            'students': students
+        }
+        
+        return render(
+            request, 
+            'blog/employee_report.html',
+            context
+        )
+
 
 # Employer
 @login_required
 def teacher_home(request):
-
     if request.user.is_teacher:
-
         if request.method == 'GET':
             username = request.user.username
-
-            # user = CustomUser.objects.get(username=username)
-            # print(user.employee_students)
-            return render(request, 'blog/teacher_home.html')
+            user = CustomUser.objects.get(username=username)
+            students = user.teacher_students.all()
+            context = {
+                'students': students
+            }
+            return render(
+                request, 
+                'blog/teacher_home.html',
+                context
+            )
     else:
         if request.user.is_employee:
             return redirect('/employee-home')
         
         if request.user.is_student:
             return redirect('/home')
-            
+
 @login_required
 def teacher_manage(request):
     if request.user.is_teacher:
@@ -457,11 +496,10 @@ def teacher_manage(request):
         if request.user.is_student:
             return redirect('/home')
 
-def send_request(request):
+def send_request(request, id):
     user = request.user.username
     if request.method == 'POST':
-        print(request.POST)
-        student_id = request.POST['student']
+        student_id = id
         try:
             student = CustomUser.objects.get(id=student_id)
         except CustomUser.DoesNotExist:
@@ -496,6 +534,33 @@ def success_teacher_approval(request, uid, token):
             if user is not None and account_activation_token.check_token(user, token):
                 user.accept_teacher = True
                 user.save()
+                
+                teacher = CustomUser.objects.get(id=user.my_teacher.id)
+                teacher.teacher_students.add(user)
                 return render(request, 'success/teacher_approval_success.html')
             else:
                 return render(request, 'errors/teacher_approval_failed.html')
+
+            return redirect('/instructor-manage')
+
+def success_employee_approval(request, uid, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uid))
+    except ValueError as e:
+        return render(request, 'errors/employee_approval_failed.html')
+    else:
+        try:
+            user = CustomUser.objects.get(pk=uid)
+        
+        except ValueError as e:
+            return render(request, 'errors/employee_approval_failed.html')
+        else:
+            if user is not None and account_activation_token.check_token(user, token):
+                user.is_student_approve = True
+                user.save()
+            
+                return render(request, 'success/employee_approval_success.html')
+            else:
+                return render(request, 'errors/employee_approval_failed.html')
+
+            return redirect('/employee-home')
