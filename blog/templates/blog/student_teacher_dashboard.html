@@ -1,22 +1,28 @@
- {% extends "blog/base.html"%}
+{%extends "blog/base.html"%}
+<!--STUDENT DASHBOARD-->
 
-{% block content %}
+{%block content%}
 
-<style>
 
-</style>
+
           {% if user.is_authenticated %}
-               <a class="nav-item nav-link" >
-                <h4>{{user.first_name}}'s Dashboard</h4>
-              </a>
+             <div class="container">
+                <a class="nav-item nav-link mr-auto" >
+                    <h4>{{student}}'s Dashboard </h4>
+                </a>
+                <a href="{% url 'teacher_home' %}">
+                    <button class="btn btn-primary">Back Dashboard</button>
+                </a>
+            </div>
+            
              {%else%}
-            {%endif%}
+        {%endif%}
 
 
 <!---->
 
 
-
+<div class="container">
 <div class="card" >
 
   <div class="card-header navbar-dark bg-steel">
@@ -86,7 +92,7 @@
 </div>
   </div>
 
-<!---------------------GRAPHS---------->
+<!---------------------GRAPHS------------------------------------------------------->
 <!-------->
 <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -273,11 +279,18 @@
   </div>
  
 </div>
+</div>
+
 
 <!--Total Work Time Spent-->
 
 
 <script> 
+    var total_hour = "{{ total_hour }}"
+    var essential_count = "{{ essential }}"
+    var nonessential_count = "{{ non_essential }}"
+    var essential_hour = "{{ essential_hour }}"
+    var nonessential_hour = "{{ nonessential_hour }}"
 
 /**BAR CHART  */
     var myChart = document.getElementById('myChart').getContext('2d');
@@ -289,11 +302,11 @@
     var allChart = new Chart(myChart, {
         type:'bar',//bar, pie chart, line..etc.
         data:{
-            labels:['Total Hours Reached','Required Hours: 500'],
+            labels:['Total Hours Reached: ' + total_hour,'Required Hours: 500'],
             datasets:[{
                 label:'Hour Indicator for OJT Worktime',
                 data:[
-                100,
+                total_hour,
                 500
                 ],
                 
@@ -350,11 +363,11 @@ Chart.defaults.font.color = '#777';
 var allChart = new Chart(myPie, {
 type:'pie',//bar, pie chart, line..etc.
 data:{
-    labels:['Total Hours Reached','Required Hours: 500'],
+    labels:['Total Hours Reached: ' + total_hour,'Required Hours: 500'],
     datasets:[{
         label:'Hour Indicator for OJT Worktime',
         data:[
-        100,
+        total_hour,
         500
         ],
         
@@ -409,11 +422,11 @@ Chart.defaults.font.color = '#777';
 var allChart = new Chart(myLine, {
 type:'line',//bar, pie chart, line..etc.
 data:{
-    labels:['Total Hours Reached','Required Hours: 500'],
+    labels:['Total Hours Reached: ' + total_hour,'Required Hours: 500'],
     datasets:[{
         label:'Hour Indicator for OJT Worktime',
         data:[
-        100,
+        total_hour,
         500
         ],
         
@@ -477,8 +490,8 @@ options:{
             datasets:[{
                 label:'Hour Indicator for Two Types of Time Spent',
                 data:[
-                5,
-                3
+                essential_count,
+                nonessential_count
                 ],
                 
                 backgroundColor:[
@@ -538,8 +551,8 @@ data:{
     datasets:[{
         label:'Hour Indicator for Two Types of Time Spent',
         data:[
-        5,
-        3
+        essential_count,
+        nonessential_count
         ],
         
         backgroundColor:[
@@ -597,8 +610,8 @@ data:{
     datasets:[{
         label:'Hour Indicator for Two Types of Time Spent',
         data:[
-        5,
-        3
+        essential_count,
+        nonessential_count
         ],
         
         backgroundColor:[
@@ -825,9 +838,6 @@ options:{
             
     }
     });
-
-
-
-
 </script>
-{% endblock content%}
+
+{% endblock content %} 

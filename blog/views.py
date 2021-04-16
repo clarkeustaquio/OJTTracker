@@ -10,7 +10,15 @@ from accounts.models import CustomUser
 
 from .forms import ListForm
 
+from .services.teacher_request import teacher_request, account_activation_token
+from .services.employee_request import employee_request
 
+# For email 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_text
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 def login(request):
     if request.method =='POST':
@@ -116,6 +124,13 @@ def registration_student(request):
                         user.save()
 
                         employee.employer_student.add(user)
+
+                        employee_request(    
+                            email_to=employee.email,
+                            name=employee.first_name.title(),
+                            user_pk=user.pk,
+                            user=user
+                        )
                         messages.info(request,'User Created!')
 
                         return redirect('/')
@@ -277,10 +292,10 @@ def home(request):
         })
     else:
         if request.user.is_teacher:
-            return redirect('instructor-home/')
+            return redirect('/instructor-home')
         
         if request.user.is_employee:
-            return redirect('employee-home/')
+            return redirect('/employee-home')
 
 @login_required
 def task(request):
@@ -351,11 +366,6 @@ def task(request):
         if request.user.is_employee:
             return redirect('employee-home/')
     
-    
-    
-
-    
-
 
 def delete_list_item(request,list_id):
     list_to_delete=TaskList.objects.get(pk=list_id)
@@ -459,19 +469,15 @@ def employee_report(request): #Pending approval ng report summary
 
         user = CustomUser.objects.get(username=username)
         students = user.employer_student.all()
-        
+
+        context = {
+            'students': students
+        }
         
         return render(
             request, 
             'blog/employee_report.html',
-          
+            context
         )
-        
-        
-#Teacher
-def teacher_home(request):
-    return render(request,'blog/teacher_home.html')
 
-def teacher_manage(request):
-    return render(request,'blog/teacher_manage.html')
 
