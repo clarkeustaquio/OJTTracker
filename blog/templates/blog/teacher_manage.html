@@ -46,7 +46,7 @@ input[type=text]:focus {
             <td>
               <form action="{% url 'send_request' student.id %}" method="POST">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Send Request</button>
+                <button type="submit" class="btn btn-info bg-steel">Send Request</button>
             </form>
             </td>
         </tr>
@@ -55,7 +55,7 @@ input[type=text]:focus {
     </table>
         
     {% else%}
-        <h5>Empty students.</h5>
+        <h5 class="text-center mt-2">Empty students.</h5>
     {% endif %}
 
 {% endblock content%}

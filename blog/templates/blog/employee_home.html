@@ -1,7 +1,8 @@
  {% extends "blog/base.html"%}
 
 {% block content %}
-
+<h3>Students</h3>
+<hr></hr>
   {% for student in students %}
     {% if student.is_student_approve %}
         <ul class="list-group">
@@ -10,12 +11,13 @@
           <span class="float-right">
             <form action="{% url 'view_employee_student_dashboard' student.id %}" method="POST">
               {% csrf_token %}
-              <button type="submit" class="btn btn-primary">View Dashboard</button>
+              <button type="submit" class="btn btn-info bg-steel">View Dashboard</button>
             </form>
           </span>
           </li>
         </ul> 
     {% endif %}
-
+    {% empty %}
+    <h5 class="text-center mt-2">Empty students.</h5>
   {% endfor %}
 {% endblock content%}

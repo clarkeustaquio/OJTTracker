@@ -1,3 +1,4 @@
+import datetime as dt
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import auth
@@ -20,6 +21,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
+
 def login(request):
     if request.method =='POST':
         username = request.POST['username']
@@ -29,9 +31,17 @@ def login(request):
         user = auth.authenticate(username=username,password=password)
         if user is not None:
             if user.is_student:
+                date_today = dt.date.today()
+
+                if user.day_login == None:
+                    user.day_login = datetime.now()
+                elif user.day_login < date_today:
+                    user.is_send = False
+                    user.day_login = datetime.now()
+                
+                user.save()
 
                 auth.login(request,user)
-                print('login successfully')
                 return redirect('home')
             else:
                 messages.info(request,'invalid credentials')
@@ -49,13 +59,19 @@ def logindean(request):
         password = request.POST['password']
         
         user = auth.authenticate(username=username,password=password)
-        print(user)
         if user is not None:
-            print(user.is_teacher)
             if user.is_teacher:
-                print(user.is_teacher)
+                date_today = dt.date.today()
+
+                if user.day_login == None:
+                    user.day_login = datetime.now()
+                elif user.day_login < date_today:
+                    user.is_send = False
+                    user.day_login = datetime.now()
+                
+                user.save()
+
                 auth.login(request,user)
-                print('login successfully')
                 return redirect('/instructor-home')
             else:
                 messages.info(request,'invalid credentials')
@@ -75,9 +91,16 @@ def loginemployer(request):
         
         if user is not None:
             if user.is_employee:
+                date_today = dt.date.today()
+                if user.day_login == None:
+                    user.day_login = datetime.now()
+                elif user.day_login < date_today:
+                    user.is_send = False
+                    user.day_login = datetime.now()
+
+                user.save()
 
                 auth.login(request,user)
-                print('login successfully')
                 return redirect('/employee-home')
             else:
                 messages.info(request,'invalid credentials')
@@ -247,18 +270,18 @@ def home(request):
 
     if request.user.is_student:
         user = CustomUser.objects.get(username=request.user.username)
-        task_list = TaskList.objects.filter(user=user)
+        task_list = TaskList.objects.filter(
+            user=user, is_employee_accepted=True)
         
         hours = 0
         essential = 0
         non_essential = 0
-
         essential_hour = 0
         non_essential_hour = 0
+
         for task in task_list:
             start_time = task.start_time
             end_time = task.end_time
-
     
             if end_time > start_time:
                 time_spent = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
@@ -276,19 +299,55 @@ def home(request):
                     non_essential += 1
                     non_essential_hour += hour
 
-        print(hours)
-        print(essential)
-        print(non_essential)
+        # Latest Approved Task
+        latest_task = TaskList.objects.filter(
+            user=user, is_current=True, is_employee_accepted=True)
 
-        print(essential_hour)
-        print(non_essential_hour)
+        latest_date = None
+        latest_hours = 0
+        latest_essential = 0
+        latest_non_essential = 0
+        latest_essential_hour = 0
+        latest_non_essential_hour = 0
+        
+        print(latest_essential)
+        print(latest_essential_hour)
+
+        for task in latest_task:
+            latest_date = task.date_created
+            start_time = task.start_time
+            end_time = task.end_time
+
+            print(task)
+            if end_time > start_time:
+                time_spent = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
+                total_time_spent = time_spent.total_seconds()
+
+                hour = int(total_time_spent // 3600)
+                latest_hours += hour
+
+
+                print(task.task_type)
+                if task.task_type == 'Essential':
+                    latest_essential += 1
+                    latest_essential_hour += hour
+
+                elif task.task_type == 'Non-Essential':
+                    latest_non_essential += 1
+                    latest_non_essential_hour += hour
 
         return render(request,'blog/home.html', {
             'total_hour': hours,
             'essential': essential,
             'non_essential': non_essential,
             'essential_hour': essential_hour,
-            'non_essential_hour': non_essential_hour
+            'non_essential_hour': non_essential_hour,
+            'latest_date': latest_date,
+            'latest_hour': latest_hours,
+            'latest_essential': latest_essential,
+            'latest_non_essential': latest_non_essential,
+            'latest_essential_hour': latest_essential_hour,
+            'latest_non_essential_hour': latest_non_essential_hour
         })
     else:
         if request.user.is_teacher:
@@ -311,7 +370,9 @@ def task(request):
 
         username = request.user.username
         user = CustomUser.objects.get(username=username)
-        task_list = TaskList.objects.filter(user=user)
+
+        task_list = TaskList.objects.filter(
+            user=user, is_send=False, date_created=datetime.now())
 
         if request.method =='POST':     
             # if request.POST['start_time'] < request.POST['end_time']:
@@ -357,7 +418,30 @@ def task(request):
         
         if request.user.is_employee:
             return redirect('employee-home/')
-    
+
+def submit_report(request):
+    username = request.user.username
+    user = CustomUser.objects.get(username=username)
+
+    task_list = TaskList.objects.filter(
+        user=user, is_send=False, date_created=datetime.now())
+
+    for task in task_list:
+        task.is_send = True
+        task.save()
+
+    user.is_send = True
+    user.save()
+
+    # current_switch = TaskList.objects.filter(
+    #     user=user, is_current=True, is_employee_accepted=True
+    # )
+
+    # for current in current_switch:
+    #     current.is_current = False
+    #     current.save()
+
+    return redirect('/task')
 
 def delete_list_item(request,list_id):
     list_to_delete=TaskList.objects.get(pk=list_id)
@@ -436,8 +520,23 @@ def employee_report(request): #Pending approval ng report summary
         user = CustomUser.objects.get(username=username)
         students = user.employer_student.all()
 
+        student_reports = list()
+
+        for student in students:
+            task = TaskList.objects.filter(
+                user=student, 
+                is_send=True, 
+                is_employee_accepted=False
+            )
+
+            student_reports.append({
+                'student': student,
+                'reports': task
+            })
+
         context = {
-            'students': students
+            'students': students,
+            'student_reports': student_reports
         }
         
         return render(
@@ -445,6 +544,83 @@ def employee_report(request): #Pending approval ng report summary
             'blog/employee_report.html',
             context
         )
+
+def approve_student_task(request, student_id, id):
+    username = request.user.username
+    employee = CustomUser.objects.get(username=username)
+    user = CustomUser.objects.get(id=student_id)
+
+    date_today = dt.date.today()
+    if employee.day_login < date_today:
+        current_switch = TaskList.objects.filter(
+            user=user, is_current=True, is_employee_accepted=True
+        )
+
+        for current in current_switch:
+            current.is_current = False
+            current.save()
+
+
+    task = TaskList.objects.get(id=id)
+    task.is_current = True
+    task.is_employee_accepted = True
+    task.save()
+
+
+    # tasks = TaskList.objects.filter(
+    #     user=student, 
+    #     is_send=True, 
+    #     is_employee_accepted=False
+    # )
+
+    # if len(tasks) > 0:
+    #     current_switch = TaskList.objects.filter(
+    #         user=user, is_current=True, is_employee_accepted=True)
+
+    #     for current in current_switch:
+    #         current.is_current = False
+    #         # current.save()
+    #         print(Here)
+
+    return redirect('/employee_report')
+
+def approve_student_all(request, id):
+    username = request.user.username
+    user = CustomUser.objects.get(username=username)
+    student = CustomUser.objects.get(id=id)
+
+    date_today = dt.date.today()
+    if user.day_login < date_today:
+        current_switch = TaskList.objects.filter(
+            user=student, is_current=True, is_employee_accepted=True
+        )
+
+        for current in current_switch:
+            current.is_current = False
+            current.save()
+
+
+    # current_switch = TaskList.objects.filter(
+    #     user=student, is_current=True, is_employee_accepted=True
+    # )
+
+    # for current in current_switch:
+    #     current.is_current = False
+    #     current.save()
+
+    tasks = TaskList.objects.filter(
+        user=student, 
+        is_send=True, 
+        is_employee_accepted=False
+    )
+
+    for task in tasks:
+        task.is_current = True
+        task.is_employee_accepted = True
+        task.save()
+
+    return redirect('/employee_report')
+
 
 
 # Employer
@@ -569,7 +745,9 @@ def view_student_dashboard(request, id):
     if request.method == 'POST':
         student_id = id
         student = CustomUser.objects.get(id=student_id)
-        task_list = TaskList.objects.filter(user=student)
+        task_list = TaskList.objects.filter(
+            user=student, is_employee_accepted=True
+        )
         
         hours = 0
         essential = 0
@@ -596,13 +774,51 @@ def view_student_dashboard(request, id):
                     non_essential += 1
                     non_essential_hour += hour
 
+        # Latest Approved Task
+        latest_task = TaskList.objects.filter(
+            user=student, is_current=True, is_employee_accepted=True)
+
+        latest_date = None
+        latest_hours = 0
+        latest_essential = 0
+        latest_non_essential = 0
+        latest_essential_hour = 0
+        latest_non_essential_hour = 0
+        
+        for task in latest_task:
+            latest_date = task.date_created
+            start_time = task.start_time
+            end_time = task.end_time
+    
+            if end_time > start_time:
+                time_spent = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
+                total_time_spent = time_spent.total_seconds()
+
+                hour = int(total_time_spent // 3600)
+                latest_hours += hour
+
+                if task.task_type == 'Essential':
+                    latest_essential += 1
+                    latest_essential_hour += hour
+
+                elif task.task_type == 'Non-Essential':
+                    latest_non_essential += 1
+                    latest_non_essential_hour += hour
+
+
         context = {
             'student': student.first_name.title(),
             'total_hour': hours,
             'essential': essential,
             'non_essential': non_essential,
             'essential_hour': essential_hour,
-            'non_essential_hour': non_essential_hour
+            'non_essential_hour': non_essential_hour,
+            'latest_date': latest_date,
+            'latest_hour': latest_hours,
+            'latest_essential': latest_essential,
+            'latest_non_essential': latest_non_essential,
+            'latest_essential_hour': latest_essential_hour,
+            'latest_non_essential_hour': latest_non_essential_hour
         }
         return render(
             request, 
@@ -619,7 +835,8 @@ def view_employee_student_dashboard(request, id):
         if request.method == 'POST':
             student_id = id
             student = CustomUser.objects.get(id=student_id)
-            task_list = TaskList.objects.filter(user=student)
+            task_list = TaskList.objects.filter(
+                user=student, is_employee_accepted=True)
             
             hours = 0
             essential = 0
@@ -646,13 +863,51 @@ def view_employee_student_dashboard(request, id):
                         non_essential += 1
                         non_essential_hour += hour
 
+
+            # Latest Approved Task
+            latest_task = TaskList.objects.filter(
+                user=student, is_current=True, is_employee_accepted=True)
+
+            latest_date = None
+            latest_hours = 0
+            latest_essential = 0
+            latest_non_essential = 0
+            latest_essential_hour = 0
+            latest_non_essential_hour = 0
+            
+            for task in latest_task:
+                latest_date = task.date_created
+                start_time = task.start_time
+                end_time = task.end_time
+        
+                if end_time > start_time:
+                    time_spent = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
+                    total_time_spent = time_spent.total_seconds()
+
+                    hour = int(total_time_spent // 3600)
+                    latest_hours += hour
+
+                    if task.task_type == 'Essential':
+                        latest_essential += 1
+                        latest_essential_hour += hour
+
+                    elif task.task_type == 'Non-Essential':
+                        latest_non_essential += 1
+                        latest_non_essential_hour += hour
+
             context = {
                 'student': student.first_name.title(),
                 'total_hour': hours,
                 'essential': essential,
                 'non_essential': non_essential,
                 'essential_hour': essential_hour,
-                'non_essential_hour': non_essential_hour
+                'non_essential_hour': non_essential_hour,
+                'latest_date': latest_date,
+                'latest_hour': latest_hours,
+                'latest_essential': latest_essential,
+                'latest_non_essential': latest_non_essential,
+                'latest_essential_hour': latest_essential_hour,
+                'latest_non_essential_hour': latest_non_essential_hour
             }
             return render(
                 request, 

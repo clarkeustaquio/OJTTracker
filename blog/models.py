@@ -24,9 +24,12 @@ class TaskList(models.Model):
     end_time = models.TimeField(auto_now=False, auto_now_add=False, null=True)
     task = models.CharField(max_length=100)
     task_type = models.CharField(max_length=20)
+    date_created = models.DateField(auto_now_add=True)
 
     is_send = models.BooleanField(default=False)
     is_employee_accepted = models.BooleanField(default=False)
+
+    is_current = models.BooleanField(default=False)
 
     def __str__(self):
         return self.task

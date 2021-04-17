@@ -46,7 +46,11 @@ urlpatterns = [
 
     # Dashboard
     path('view-student-dashboard/<int:id>/', views.view_student_dashboard, name='view_student_dashboard'),
-    path('view-employee-student-dashboard/<int:id>/', views.view_employee_student_dashboard, name='view_employee_student_dashboard')
+    path('view-employee-student-dashboard/<int:id>/', views.view_employee_student_dashboard, name='view_employee_student_dashboard'),
+
+    path('submit-report/', views.submit_report, name='submit_report'),
+    path('approve-student-task/<int:student_id>/<int:id>/', views.approve_student_task, name='approve_student_task'),
+    path('approve-student-all/<int:id>/', views.approve_student_all, name='approve_student_all')
 ]
 
 

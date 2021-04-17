@@ -4,6 +4,9 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     is_student = models.BooleanField(default=False)
+    day_login = models.DateField(null=True, blank=True)
+    is_send = models.BooleanField(default=False)
+
     is_employee = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
 

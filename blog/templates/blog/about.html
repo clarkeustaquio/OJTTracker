@@ -98,8 +98,15 @@ img{
                         <!-- Button trigger modal -->
 <button class="btn btn-info rounded-circle" data-toggle="modal" data-target="#exampleModal">
  <i class="fas fa-folder-plus"></i>
-</button> </h3>
-                        
+</button>
+{% if not request.user.is_send %}
+  <form action="{% url 'submit_report' %}" method="POST" class="float-right">
+    {% csrf_token %}
+    <button class="btn btn-info bg-steel">Submit Report</button>
+  </form>
+{% endif %}
+</h3>
+                    
                    
                               
 
