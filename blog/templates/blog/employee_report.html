@@ -10,6 +10,7 @@
     {% empty %}
       <h5>Empty Students</h5>
   {% endfor %} {% endcomment %}
+  <body style="margin-top:5%">
     <div class="mt-4"></div>
     {% for report in student_reports %}
       {% if report.student.is_student_approve %}
@@ -53,7 +54,14 @@
         {% endif %}
       {% endif %}
       {% empty %}
-        <h5 class="text-center mt-2">Empty reports.</h5>
+        <div class=" alert alert-warning alert-dismissible fade show" style="width:50%; margin-left:25%;" role="alert">
+ 
+                <button style ="position: absolute;
+                top: 8px;
+                right: 16px; " type="button" class= "btn btn-outline-danger " data-dismiss="alert" aria-label="Close"><i class="fas fa-times "></i></button>
+                
+                <strong ><h4 class=" text-center">No Reports Yet </h4></strong> 
+    </div>  
     {% endfor %}
 
 
@@ -77,4 +85,5 @@
       <h5>Empty Students</h5>
   {% endfor %}
 </div> {% endcomment %}
+</body>
 {% endblock content%}

@@ -20,7 +20,7 @@
                                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="{% url 'logindean' %}" role="tab" aria-controls="profile" aria-selected="false">Instructor</a>
                             </li>
                             <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="{% url 'loginemployer' %}" role="tab" aria-controls="profile" aria-selected="fasle">Employer</a>
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="{% url 'loginemployer' %}" role="tab" aria-controls="profile" aria-selected="false">Employer</a>
                              </li>
                         </ul> 
                         <div class="tab-content" id="myTabContent">
@@ -35,14 +35,14 @@
                             <input name="username" class="form-control" placeholder="Email" type="email">
                         </div> <!-- form-group// -->
                         <div class="form-group">
-                            <a class="float-right" href="#">Forgot?</a>
+                            {% comment %} <a class="float-right" href="#">Forgot?</a> {% endcomment %}
                             <label>Your Password</label>
                             <input name="password"class="form-control" placeholder="******" type="password">
                         </div> <!-- form-group// --> 
                         <div class="form-group"> 
-                        <div class="checkbox">
+                        {% comment %} <div class="checkbox">
                         <label> <input type="checkbox"> Save password </label>
-                        </div> <!-- checkbox .// -->
+                        </div> <!-- checkbox .// --> {% endcomment %}
                         </div> <!-- form-group// -->  
                         <div class="form-group">
                         <input type="Submit" class="btn btn-outline-primary btn-block">   

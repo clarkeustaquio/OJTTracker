@@ -93,7 +93,7 @@ img{
             {% if request.user.is_student %}
               <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link"
-                  href="{% url 'home' %}"> Dashboard
+                  href="{% url 'home' %}"><i class="fas fa-chart-pie"></i> Dashboard
                 </a>
 
                 <a class="nav-item nav-link" 
@@ -121,16 +121,15 @@ img{
                 </a>
 {% comment %} 
                 <a class="nav-item nav-link" 
-<<<<<<< HEAD
-                  href="{% url 'employee_pending' %}"><i class="fas fa-user-clock"></i> Pending Students
-                </a>
-=======
                   href="{% url 'employee_pending' %}">Pending Students
                 </a> {% endcomment %}
->>>>>>> a9f003cbdf9444578774bef893ea559fbcd29892
 
                 <a class="nav-item nav-link" 
                   href="{% url 'employee_report' %}"> <i class="fas fa-paste"></i> Report
+                </a>
+
+                <a class="nav-item nav-link" 
+                  href="{% url 'employee_pending' %}"> <i class="fas fa-users"></i> Employee Pending
                 </a>
                
               </div>
@@ -152,7 +151,7 @@ img{
 
                   {% elif request.user.is_teacher%}
                     <a class="nav-item nav-link" style="color:white">
-                <img class="papa" style="width:2.5%" src="media\pics\teacher-svgrepo-com.svg">Welcome Teacher, {{user.first_name}}
+               Welcome, Teacher {{user.first_name}}
                 </a>
                 <a class="nav-item nav-link"
                 href="{% url 'logout' %}">Logout
@@ -162,7 +161,7 @@ img{
                     <a class="nav-item nav-link" style="color:white;">
                 Welcome, {{user.first_name}} 
                     </a>
-                <a class="nav-item nav-link" style="margin-left:3%;" 
+                <a class="nav-item nav-link" 
                 href="{% url 'logout' %}">Logout
                 </a>
                 {%endif%}

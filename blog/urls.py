@@ -11,7 +11,7 @@ urlpatterns = [
     path('registration_dean', views.registration_dean, name='registration_dean'),
     path('registration_employer', views.registration_employer, name='registration_employer'),
     path('home', views.home, name='home'),
-    # path('task', views.task, name='blog_about'),
+    path('task', views.task, name='blog_about'),
     path('logout', views.logout, name ='logout'),
     path('delete_list/<int:list_id>/',views.delete_list_item, name='delete_list_item'),
 
@@ -27,10 +27,6 @@ urlpatterns = [
     
     
     path('teacher_home/',views.teacher_home, name='teacher_home'),
-<<<<<<< HEAD
-    # path('teacher_manage',views.teacher_manage,name='teacher_manage')
-    path('test/',views.test,name='test')
-=======
     path('teacher_manage',views.teacher_manage,name='teacher_manage'),
 
 
@@ -55,7 +51,6 @@ urlpatterns = [
     path('submit-report/', views.submit_report, name='submit_report'),
     path('approve-student-task/<int:student_id>/<int:id>/', views.approve_student_task, name='approve_student_task'),
     path('approve-student-all/<int:id>/', views.approve_student_all, name='approve_student_all')
->>>>>>> a9f003cbdf9444578774bef893ea559fbcd29892
 ]
 
 

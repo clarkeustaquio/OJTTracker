@@ -8,7 +8,7 @@
                         <img style="width:200px" src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png" alt=""/>
                         <h3>Welcome to OJT Tracker</h3>
                         <p>Made by Students from Information Systems</p>
-                        <a class="btn btn-primary btn-white btn-lg btn-block" href="{% url 'login' %}" >Login</a><br/>
+                        <a class="btn btn-primary btn-white btn-lg btn-block" href="{% url 'loginemployer' %}" >Login</a><br/>
                     </div>
                     <div class="col-md-9 register-right">
                         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
@@ -37,13 +37,11 @@
                                         <div class="form-group">
                                             <input name="last_name" type="text" class="form-control" placeholder="Last Name *" value="" required/>
                                         </div>
-                                        <div class="form-group">
-                                            <input name="password1" type="password" class="form-control" placeholder="Password *" value="" required/>
+                                          <div class="form-group">
+                                            <input name="email" type="email" class="form-control" placeholder="Your Email *" value="" />
                                         </div>
-                                        <div class="form-group">
-                                            <input name="password2" type="password" class="form-control"  placeholder="Confirm Password *" value="" required/>
-                                        </div>
-                                        <div class="form-group" name="gender">
+                                      
+                                        {% comment %} <div class="form-group" name="gender">
                                             <div class="maxl">
                                                 <label class="radio inline"> 
                                                     <input type="radio" name="gender" value="male" checked>
@@ -54,16 +52,19 @@
                                                     <span>Female </span> 
                                                 </label>
                                             </div>
-                                        </div>
+                                        </div> {% endcomment %}
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input name="email" type="email" class="form-control" placeholder="Your Email *" value="" />
+                                            <input name="password1" type="password" class="form-control" placeholder="Password *" value="" required/>
                                         </div>
                                         <div class="form-group">
+                                            <input name="password2" type="password" class="form-control"  placeholder="Confirm Password *" value="" required/>
+                                        </div>
+                                        {% comment %} <div class="form-group">
                                             <input name="phone" type="text" minlength="10" maxlength="10" class="form-control" placeholder="Your Phone *" value="" />
-                                        </div>
-                                        <div class="form-group">
+                                        </div> {% endcomment %}
+                                        {% comment %} <div class="form-group">
                                             <select class="form-control" name="question">
                                                 <option class="hidden"  selected disabled>Please select your Sequrity Question</option>
                                                 <option>What is your Birthdate?</option>
@@ -73,7 +74,7 @@
                                         </div>
                                         <div class="form-group">
                                             <input name="answer" type="text" class="form-control" placeholder="Enter Your Answer *" value="" />
-                                        </div>
+                                        </div> {% endcomment %}
                                         <input type="submit" class="btnRegister"  value="Register"/>
                                     </div>
                                     </form>

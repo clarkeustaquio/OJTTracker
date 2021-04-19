@@ -173,10 +173,10 @@ def registration_dean(request):
         password1= request.POST['password1']    
         password2= request.POST['password2']
         email= request.POST['email']
-        phone = request.POST['phone']
-        question = request.POST['question']
-        answer = request.POST['answer']
-        gender = request.POST['gender']
+        # phone = request.POST['phone']
+        # question = request.POST['question']
+        # answer = request.POST['answer']
+        # gender = request.POST['gender']
 
         if password1==password2:
             if CustomUser.objects.filter(username=email).exists():
@@ -186,9 +186,9 @@ def registration_dean(request):
                 messages.info(request,'Email Taken')
                 return redirect('registration_dean')
             else:
-                is_male = False
-                if gender == 'male':
-                    is_male = True
+            #     is_male = False
+            #     if gender == 'male':
+            #         is_male = True
 
                 user = CustomUser.objects.create_user(
                     username=email, 
@@ -196,10 +196,10 @@ def registration_dean(request):
                     email=email, 
                     first_name=first_name,
                     last_name=last_name,
-                    phone=phone,
-                    question=question,
-                    answer=answer,
-                    is_male=is_male
+                    # phone=phone,
+                    # question=question,
+                    # answer=answer,
+                    # is_male=is_male
                 )
                 user.is_teacher = True
                 user.save()
@@ -218,10 +218,10 @@ def registration_employer(request):
         password1= request.POST['password1']
         password2= request.POST['password2']
         email= request.POST['email']
-        phone = request.POST['phone']
-        question = request.POST['question']
-        answer = request.POST['answer']
-        gender = request.POST['gender']
+        # phone = request.POST['phone']
+        # question = request.POST['question']
+        # answer = request.POST['answer']
+        # gender = request.POST['gender']
 
         if password1 == password2:
             if CustomUser.objects.filter(username=email).exists():
@@ -231,9 +231,9 @@ def registration_employer(request):
                 messages.info(request,'Email Taken')
                 return redirect('registration_employer')
             else:
-                is_male = False
-                if gender == 'male':
-                    is_male = True
+            #     is_male = False
+            #     if gender == 'male':
+            #         is_male = True
 
                 employer = CustomUser.objects.create_user(
                     username=email, 
@@ -241,10 +241,10 @@ def registration_employer(request):
                     email=email, 
                     first_name=first_name,
                     last_name=last_name,
-                    phone=phone,
-                    question=question,
-                    answer=answer,
-                    is_male=is_male
+                    # phone=phone,
+                    # question=question,
+                    # answer=answer,
+                    # is_male=is_male
                 )
                 employer.is_employee = True
                 employer.save()
@@ -356,58 +356,6 @@ def home(request):
         if request.user.is_employee:
             return redirect('/employee-home')
 
-<<<<<<< HEAD
-# @login_required
-# def task(request):
-
-#     if request.user.is_student:
-
-#         task_type = [
-#             'Essential',
-#             'Non-Essential'
-#         ]
-
-#     return render(request,'blog/home.html', {
-#         'total_hour': hours,
-#         'essential': essential,
-#         'non_essential': non_essential,
-#         'essential_hour': essential_hour,
-#         'non_essential_hour': non_essential_hour
-#     })
-    
-#         username = request.user.username
-#         user = CustomUser.objects.get(username=username)
-#         task_list = TaskList.objects.filter(user=user)
-
-#         if request.method =='POST':     
-#             # if request.POST['start_time'] < request.POST['end_time']:
-#             #     return render(request, 'blog/about.html', {
-#             #         'task_list':task_list,
-#             #         'task_type': task_type,
-#             #     })
-#             # else:
-#             #     return render(request, 'blog/about.html', {
-#             #         'task_list':task_list,
-#             #         'task_type': task_type,
-#             #     })
-
-#             task = TaskList.objects.create(
-#                 user=user,
-#                 start_time=request.POST['start_time'],
-#                 task=request.POST['task'],
-#                 end_time=request.POST['end_time'],
-#                 task_type=request.POST['task_type']
-#             )
-
-#             return redirect('/task')
-
-#             # print(request.POST)
-#             # forms = ListForm(request.POST)
-#             # if forms.is_valid():
-#             #     forms.save()
-
-#             #     return redirect('/task')
-=======
 @login_required
 def task(request):
 
@@ -427,16 +375,16 @@ def task(request):
             user=user, is_send=False, date_created=datetime.now())
 
         if request.method =='POST':     
-            # if request.POST['start_time'] < request.POST['end_time']:
-            #     return render(request, 'blog/about.html', {
-            #         'task_list':task_list,
-            #         'task_type': task_type,
-            #     })
-            # else:
-            #     return render(request, 'blog/about.html', {
-            #         'task_list':task_list,
-            #         'task_type': task_type,
-            #     })
+            if request.POST['start_time'] < request.POST['end_time']:
+                return render(request, 'blog/about.html', {
+                    'task_list':task_list,
+                    'task_type': task_type,
+                })
+            else:
+                return render(request, 'blog/about.html', {
+                    'task_list':task_list,
+                    'task_type': task_type,
+                })
 
             task = TaskList.objects.create(
                 user=user,
@@ -448,32 +396,26 @@ def task(request):
 
             return redirect('/task')
 
-            # print(request.POST)
-            # forms = ListForm(request.POST)
-            # if forms.is_valid():
-            #     forms.save()
+            print(request.POST)
+            forms = ListForm(request.POST)
+            if forms.is_valid():
+                forms.save()
 
-            #     return redirect('/task')
->>>>>>> a9f003cbdf9444578774bef893ea559fbcd29892
+                return redirect('/task')
                 
-#         else:
+        else:
             
-#             # form = ListForm()
+            # form = ListForm()
             
-#             return render(request, 'blog/about.html', {
-#                 # 'form':form, 
-#                 'task_list':task_list,
-#                 'task_type': task_type,
-#             })
-#     else:
-#         if request.user.is_teacher:
-#             return redirect('instructor-home/')
+            return render(request, 'blog/about.html', {
+                # 'form':form, 
+                'task_list':task_list,
+                'task_type': task_type,
+            })
+    else:
+        if request.user.is_teacher:
+            return redirect('instructor-home/')
         
-<<<<<<< HEAD
-#         if request.user.is_employee:
-#             return redirect('employee-home/')
-    
-=======
         if request.user.is_employee:
             return redirect('employee-home/')
 
@@ -500,7 +442,6 @@ def submit_report(request):
     #     current.save()
 
     return redirect('/task')
->>>>>>> a9f003cbdf9444578774bef893ea559fbcd29892
 
 def delete_list_item(request,list_id):
     list_to_delete=TaskList.objects.get(pk=list_id)
@@ -946,41 +887,5 @@ def view_employee_student_dashboard(request, id):
                     hour = int(total_time_spent // 3600)
                     latest_hours += hour
 
-<<<<<<< HEAD
 def test(request):
     return render(request, 'services/employee_request.html')
-=======
-                    if task.task_type == 'Essential':
-                        latest_essential += 1
-                        latest_essential_hour += hour
-
-                    elif task.task_type == 'Non-Essential':
-                        latest_non_essential += 1
-                        latest_non_essential_hour += hour
-
-            context = {
-                'student': student.first_name.title(),
-                'total_hour': hours,
-                'essential': essential,
-                'non_essential': non_essential,
-                'essential_hour': essential_hour,
-                'non_essential_hour': non_essential_hour,
-                'latest_date': latest_date,
-                'latest_hour': latest_hours,
-                'latest_essential': latest_essential,
-                'latest_non_essential': latest_non_essential,
-                'latest_essential_hour': latest_essential_hour,
-                'latest_non_essential_hour': latest_non_essential_hour
-            }
-            return render(
-                request, 
-                'blog/student_employee_dashboard.html',
-                context
-            )
-    else:
-        if request.user.is_teacher:
-            return redirect('/instructor-home')
-        
-        if request.user.is_student:
-            return redirect('/home')
->>>>>>> a9f003cbdf9444578774bef893ea559fbcd29892
