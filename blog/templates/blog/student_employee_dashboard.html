@@ -5,18 +5,22 @@
 
 
 
-          {% if user.is_authenticated %}
-             <div class="container">
-                <a class="nav-item nav-link mr-auto" >
-                    <h4>{{student}}'s Dashboard </h4>
-                </a>
-                <a href="{% url 'teacher_home' %}">
-                    <button class="btn btn-primary">Back Dashboard</button>
-                </a>
-            </div>
-            
-             {%else%}
-        {%endif%}
+{% if user.is_authenticated %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <a class="nav-item nav-link" >
+          <h4>{{student}}'s Dashboard </h4>
+      </a>
+      </div>
+      <div class="col">
+        <a href="{% url 'employee_home' %}" style="text-decoration: none;">
+          <button class="btn btn-info bg-steel float-right">Back Dashboard</button>
+      </a>
+      </div>
+    </div>
+  </div>
+{%endif%}
 
 
 <!---->
@@ -53,7 +57,7 @@
     <div style="text-align: center; color:white;">Latest Work Time Spent</div>
   </div>
   <div class="card-body">
-    <h5 class="card-title" style="text-align: center;">Essential and Non-Essential Tasks Done on (DATE)</h5>
+    <h5 class="card-title" style="text-align: center;">Essential and Non-Essential Tasks Done on {{ latest_date }}</h5>
     <p class="card-text" style="text-align: center;">Represented by Graph</p>
     <div class="d-grid gap-2 col-6 mx-auto" >
     <button data-toggle="modal" data-target=".2bd-example-modal-xl" class="btn btn-info rounded-pill bg-steel btn-lg btn-block"><i class="fas fa-eye"></i>
@@ -281,7 +285,6 @@
 </div>
 </div>
 
-
 <!--Total Work Time Spent-->
 
 
@@ -290,7 +293,7 @@
     var essential_count = "{{ essential }}"
     var nonessential_count = "{{ non_essential }}"
     var essential_hour = "{{ essential_hour }}"
-    var nonessential_hour = "{{ nonessential_hour }}"
+    var nonessential_hour = "{{ non_essential_hour }}"
 
 /**BAR CHART  */
     var myChart = document.getElementById('myChart').getContext('2d');
@@ -476,6 +479,13 @@ options:{
 
 <!--Latest Work Time Spent-->
 <script>
+
+  var latest_hour = "{{ latest_hour }}"
+  var latest_essential = "{{ latest_essential }}"
+  var latest_non_essential = "{{ latest_non_essential }}"
+  var latest_essential_hour = "{{ latest_essential_hour }}"
+  var latest_non_essential_hour = "{{ latest_non_essential_hour }}"
+
 /**BAR CHART  */
     var myChart2 = document.getElementById('myChart2').getContext('2d');
         //Global Options
@@ -486,17 +496,21 @@ options:{
     var allChart = new Chart(myChart2, {
         type:'bar',//bar, pie chart, line..etc.
         data:{
-            labels:['Essential Tasks','Non-Essential Tasks'],
+            labels:['Essential Tasks','Non-Essential Tasks', 'Essential Hours', 'Non-Essential Hours'],
             datasets:[{
                 label:'Hour Indicator for Two Types of Time Spent',
                 data:[
-                essential_count,
-                nonessential_count
+                  latest_essential,
+                  latest_non_essential,
+                  latest_essential_hour,
+                  latest_non_essential_hour
                 ],
                 
                 backgroundColor:[
                 'rgb(100, 149, 237)',
-                'rgb(159, 226, 191)'
+                'rgb(159, 226, 191)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
                 ],
                 borderWidth:1,
                 borderColor:'#777',
@@ -547,17 +561,21 @@ Chart.defaults.font.color = '#777';
 var allChart = new Chart(myPie2, {
 type:'pie',//bar, pie chart, line..etc.
 data:{
-    labels:['Essential Tasks','Non-Essential Tasks'],
+    labels:['Essential Tasks','Non-Essential Tasks', 'Essential Hours', 'Non-Essential Hours'],
     datasets:[{
         label:'Hour Indicator for Two Types of Time Spent',
         data:[
-        essential_count,
-        nonessential_count
+          latest_essential,
+          latest_non_essential,
+          latest_essential_hour,
+          latest_non_essential_hour
         ],
         
         backgroundColor:[
-        'rgb(100, 149, 237)',
-        'rgb(159, 226, 191)'
+          'rgb(100, 149, 237)',
+          'rgb(159, 226, 191)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
         ],
         borderWidth:1,
         borderColor:'#777',
@@ -606,17 +624,21 @@ Chart.defaults.font.color = '#777';
 var allChart = new Chart(myLine2, {
 type:'line',//bar, pie chart, line..etc.
 data:{
-    labels:['Essential Tasks','Non-Essential Tasks'],
+    labels:['Essential Tasks','Non-Essential Tasks', 'Essential Hours', 'Non-Essential Hours'],
     datasets:[{
         label:'Hour Indicator for Two Types of Time Spent',
         data:[
-        essential_count,
-        nonessential_count
+          latest_essential,
+          latest_non_essential,
+          latest_essential_hour,
+          latest_non_essential_hour
         ],
         
         backgroundColor:[
-        'rgb(100, 149, 237)',
-        'rgb(159, 226, 191)'
+          'rgb(100, 149, 237)',
+          'rgb(159, 226, 191)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
         ],
         borderWidth:1,
         borderColor:'#777',
@@ -660,6 +682,13 @@ options:{
 
 <!--Total Number of Accomplished Tasks-->
 <script>
+
+    var total_hour = "{{ total_hour }}"
+    var essential_count = "{{ essential }}"
+    var nonessential_count = "{{ non_essential }}"
+    var essential_hour = "{{ essential_hour }}"
+    var nonessential_hour = "{{ non_essential_hour }}"
+    
 /**BAR CHART  */
     var myChart3 = document.getElementById('myChart3').getContext('2d');
         //Global Options
@@ -674,8 +703,8 @@ options:{
             datasets:[{
                 label:'Hour Indicator for Accomplished Tasks',
                 data:[
-                220,
-                148
+                  essential_hour,
+                  nonessential_hour
                 ],
                 
                 backgroundColor:[
@@ -735,8 +764,8 @@ options:{
             datasets:[{
                 label:'Hour Indicator for Accomplished Tasks',
                 data:[
-                220,
-                148
+                  essential_hour,
+                  nonessential_hour
                 ],
                 
                 backgroundColor:[
@@ -795,8 +824,8 @@ options:{
             datasets:[{
                 label:'Hour Indicator for Accomplished Tasks',
                 data:[
-                220,
-                148
+                  essential_hour,
+                  nonessential_hour
                 ],
                 
                 backgroundColor:[

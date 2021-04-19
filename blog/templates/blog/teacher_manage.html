@@ -24,34 +24,38 @@ input[type=text]:focus {
 <form>
   <i class="fas fa-search"></i><input type="text" name="search" placeholder="Search..">
 </form>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Student #</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Email</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Joruel</td>
-      <td>Brana</td>
-      <td>Joruel@gmail.com</td>
-      <td>--</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Clark</td>
-      <td>Eustaquio</td>
-      <td>Clark@gmail.com</td>
-      <td>--</td>
-    </tr>
-  
-  
-  </tbody>
-</table>
+
+  {% if students|length > 0 %}
+    <table class="table mt-4">
+      <thead class="text-center">
+        <tr>
+          <th scope="col">Student #</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Email</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+      {% for student in students %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.first_name}}</td>
+            <td>{{ student.last_name }}</td>
+            <td>{{ student.email }}</td>
+            <td>
+              <form action="{% url 'send_request' student.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-info bg-steel">Send Request</button>
+            </form>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+        
+    {% else%}
+        <h5 class="text-center mt-2">Empty students.</h5>
+    {% endif %}
 
 {% endblock content%}

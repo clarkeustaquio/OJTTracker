@@ -1,14 +1,26 @@
- {% extends "blog/base.html"%}
+{% extends "blog/base.html"%}
 
 {% block content %}
 
-<ul class="list-group">
 
-  <li class="list-group-item list-group-item-action">Student #1</li>
-  <li class="list-group-item list-group-item-action">Student #2</li>
-  <li class="list-group-item list-group-item-action">Student #3</li>
-  <li class="list-group-item list-group-item-action">Student #4</li>
-  <li class="list-group-item list-group-item-action">Student #5</li>
-</ul>   
+<h3>Students</h3>
+<hr></hr>
+{% for student in students %}
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-action">
+    
+    <span class="float-left">{{ student }}</span>
+    <span class="float-right">
+      <form action="{% url 'view_student_dashboard' student.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-info bg-steel">View Dashboard</button>
+      </form>
+    </span>
+    </li>
+  </ul> 
+  {% empty %}
+    <h5 class="text-center mt-2">Empty students.</h5>
+{% endfor %}
+  
 
 {% endblock content%}

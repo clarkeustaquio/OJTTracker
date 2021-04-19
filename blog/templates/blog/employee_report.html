@@ -1,11 +1,80 @@
  {% extends "blog/base.html"%}
 
 {% block content %}
+   {% comment %} {% for student in students %}
+    {% if student.is_student_approve %}
+      <h5>{{ student }}<h5>
+      <hr></hr>
+      {{ student_reports[{{ forloop.counter0 }}]}}
+    {% endif %}
+    {% empty %}
+      <h5>Empty Students</h5>
+  {% endfor %} {% endcomment %}
+    <div class="mt-4"></div>
+    {% for report in student_reports %}
+      {% if report.student.is_student_approve %}
+        {% if report.reports %}
+          
+          <form action="{% url 'approve_student_all' report.student.id %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-info bg-steel float-right mb-3">Approve All</button>
+          </form>
+          <h5>{{ report.student }}</h5>
+          
+          <table class="table table-hover table-light">
+            <thead class="text-center">
+              <tr>
+                <th scope="col">Task Started</th>
+                <th scope="col">Task Ended</th>
+                <th scope="col">Task </th>
+                <th scope="col">Type of Task</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+            {% for task in report.reports %}
+              <tr>
+                <td>{{task.start_time}}</td>
+                <td>{{task.end_time}}</td>
+                <td>{{task.task}}</td>
+                <td>{{task.task_type}}</td>
+                <td>
+                <form action="{% url 'approve_student_task' report.student.id task.id %}" method="POST" class="float d-inline">
+                    {%csrf_token%}
+                    <button type="submit" class="btn btn-info bg-steel">Approve</button>
+                </form>
+                </td>
+              </tr>       
+              {% endfor %}     
+            </tbody>
+          </table>
+        {% else %}
+          <h5 class="text-center mt-2">{{ report.student}} has no records.</h5>
+        {% endif %}
+      {% endif %}
+      {% empty %}
+        <h5 class="text-center mt-2">Empty reports.</h5>
+    {% endfor %}
+
+
+{% comment %} <div class="accordion" id="accordionExample">
   {% for student in students %}
     {% if student.is_student_approve %}
-      <li class="list-group-item list-group-item-action">{{ student }}</li>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="{{student.id}}">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{student.id}}" aria-expanded="false" aria-controls="collapseTwo">
+            {{ student }}
+          </button>
+        </h2>
+        <div id="{{student.id}}" class="accordion-collapse collapse" aria-labelledby="{{student.id}}" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+          </div>
+        </div>
+      </div>
     {% endif %}
     {% empty %}
       <h5>Empty Students</h5>
   {% endfor %}
+</div> {% endcomment %}
 {% endblock content%}
