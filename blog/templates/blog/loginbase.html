@@ -1,4 +1,12 @@
-/* .register{
+<head>
+<title>OJT Tracker NEU</title>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'blog/registration.css' %}"> {% endcomment %}
+<link rel = "icon" href = "media/pics/neulogo.png"> 
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<style>
+.register{
     background: -webkit-linear-gradient(left,#5f788a, #00c6ff);
     margin-top: 3%;
     padding: 3%;
@@ -34,11 +42,11 @@
 }
 @-webkit-keyframes mover {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
 }
 @keyframes mover {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
 }
 .register-left p{
     font-weight: lighter;
@@ -66,16 +74,16 @@
     border: none;
     background: #0062cc;
     border-radius: 1.5rem;
-    width: 28%;
+    width: 40%;
     float: right;
 }
 .register .nav-tabs .nav-link{
     padding: 2%;
     height: 34px;
-    font-weight: 600;
+    font-weight: 500;
     color: #fff;
-    border-top-right-radius: 1.5rem;
-    border-bottom-right-radius: 1.5rem;
+    border-top-right-radius: 3rem;
+    border-bottom-right-radius: 3rem;
 }
 .register .nav-tabs .nav-link:hover{
     border: none;
@@ -92,4 +100,13 @@
     margin-top: 8%;
     margin-bottom: -15%;
     color: #495057;
-} */
+}
+</style>
+</head>
+<body>
+ {% block content %}
+
+          
+
+{% endblock %}
+</body>

@@ -297,74 +297,72 @@ def home(request):
         if request.user.is_employee:
             return redirect('/employee-home')
 
-@login_required
-def task(request):
+# @login_required
+# def task(request):
 
-    if request.user.is_student:
+#     if request.user.is_student:
 
-        task_type = [
-            'Essential',
-            'Non-Essential'
-        ]
+#         task_type = [
+#             'Essential',
+#             'Non-Essential'
+#         ]
 
-    return render(request,'blog/home.html', {
-        'total_hour': hours,
-        'essential': essential,
-        'non_essential': non_essential,
-        'essential_hour': essential_hour,
-        'non_essential_hour': non_essential_hour
-    })
+#     return render(request,'blog/home.html', {
+#         'total_hour': hours,
+#         'essential': essential,
+#         'non_essential': non_essential,
+#         'essential_hour': essential_hour,
+#         'non_essential_hour': non_essential_hour
+#     })
     
+#         username = request.user.username
+#         user = CustomUser.objects.get(username=username)
+#         task_list = TaskList.objects.filter(user=user)
 
+#         if request.method =='POST':     
+#             # if request.POST['start_time'] < request.POST['end_time']:
+#             #     return render(request, 'blog/about.html', {
+#             #         'task_list':task_list,
+#             #         'task_type': task_type,
+#             #     })
+#             # else:
+#             #     return render(request, 'blog/about.html', {
+#             #         'task_list':task_list,
+#             #         'task_type': task_type,
+#             #     })
 
-        username = request.user.username
-        user = CustomUser.objects.get(username=username)
-        task_list = TaskList.objects.filter(user=user)
+#             task = TaskList.objects.create(
+#                 user=user,
+#                 start_time=request.POST['start_time'],
+#                 task=request.POST['task'],
+#                 end_time=request.POST['end_time'],
+#                 task_type=request.POST['task_type']
+#             )
 
-        if request.method =='POST':     
-            # if request.POST['start_time'] < request.POST['end_time']:
-            #     return render(request, 'blog/about.html', {
-            #         'task_list':task_list,
-            #         'task_type': task_type,
-            #     })
-            # else:
-            #     return render(request, 'blog/about.html', {
-            #         'task_list':task_list,
-            #         'task_type': task_type,
-            #     })
+#             return redirect('/task')
 
-            task = TaskList.objects.create(
-                user=user,
-                start_time=request.POST['start_time'],
-                task=request.POST['task'],
-                end_time=request.POST['end_time'],
-                task_type=request.POST['task_type']
-            )
+#             # print(request.POST)
+#             # forms = ListForm(request.POST)
+#             # if forms.is_valid():
+#             #     forms.save()
 
-            return redirect('/task')
-
-            # print(request.POST)
-            # forms = ListForm(request.POST)
-            # if forms.is_valid():
-            #     forms.save()
-
-            #     return redirect('/task')
+#             #     return redirect('/task')
                 
-        else:
+#         else:
             
-            # form = ListForm()
+#             # form = ListForm()
             
-            return render(request, 'blog/about.html', {
-                # 'form':form, 
-                'task_list':task_list,
-                'task_type': task_type,
-            })
-    else:
-        if request.user.is_teacher:
-            return redirect('instructor-home/')
+#             return render(request, 'blog/about.html', {
+#                 # 'form':form, 
+#                 'task_list':task_list,
+#                 'task_type': task_type,
+#             })
+#     else:
+#         if request.user.is_teacher:
+#             return redirect('instructor-home/')
         
-        if request.user.is_employee:
-            return redirect('employee-home/')
+#         if request.user.is_employee:
+#             return redirect('employee-home/')
     
 
 def delete_list_item(request,list_id):
@@ -481,3 +479,5 @@ def employee_report(request): #Pending approval ng report summary
         )
 
 
+def test(request):
+    return render(request, 'services/employee_request.html')

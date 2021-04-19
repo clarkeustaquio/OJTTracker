@@ -1,7 +1,9 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
+
 <!--STUDENT BASE-->
 <style>
 
@@ -18,6 +20,10 @@ img{
 @keyframes mover {
     0% { transform: translateY(0); }
     100% { transform: translateY(-5px); }
+}
+.papa {
+  margin-left:73%;
+
 }
 </style>
 <!--CHART JS-->
@@ -45,17 +51,19 @@ img{
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
-
+       <link rel = "icon" href = "media/pics/neulogo.png"> 
     {% if title %}
+  
         <title>OJT Tracker NEU - {{ title }}</title>
     {% else %}
-        <title>OJT Tracker NEU</title>
+        
+     <title>OJT Tracker NEU</title>
     {% endif %}
 
 </head>
 <body>
     <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+      <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
         <div class="container">
         {% if request.user.is_student %}
           <img style="width:5%" src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png"><a href="{% url 'home' %}"><h5 class="navbar-brand mr-4 font-weight-bold">OJT Tracker</h5></a>
@@ -83,12 +91,12 @@ img{
 
             {% if request.user.is_student %}
               <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" 
-                  href="{% url 'home' %}">Dashboard
+                <a class="nav-item nav-link"
+                  href="{% url 'home' %}"> Dashboard
                 </a>
 
                 <a class="nav-item nav-link" 
-                  href="{% url 'blog_about' %}">Task List
+                  href="{% url 'blog_about' %}"><i class="fas fa-tasks"></i> Task List
                 </a>
               </div>
             {% endif %}
@@ -96,47 +104,66 @@ img{
             {% if request.user.is_teacher %}
               <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link" 
-                  href="{% url 'teacher_home' %}">Dashboard
+                  href="{% url 'teacher_home' %}"><i class="fas fa-chart-pie"></i> Dashboard
                 </a>
 
                 <a class="nav-item nav-link" 
-                  href="{% url 'teacher_manage' %}">Manage Student
+                  href="{% url 'teacher_manage' %}"><i class="fas fa-users"></i> Manage Student
                 </a>
               </div>
             {% endif %}
 
             {% if request.user.is_employee %}
               <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" 
-                  href="{% url 'employee_home' %}">Dashboard
+                <a class="nav-item nav-link"
+                  href="{% url 'employee_home' %}"><i class="fas fa-chart-pie"></i> Dashboard
                 </a>
 
                 <a class="nav-item nav-link" 
-                  href="{% url 'employee_pending' %}">Pending Students
+                  href="{% url 'employee_pending' %}"><i class="fas fa-user-clock"></i> Pending Students
                 </a>
 
                 <a class="nav-item nav-link" 
-                  href="{% url 'employee_report' %}">Report
+                  href="{% url 'employee_report' %}"> <i class="fas fa-paste"></i> Report
                 </a>
                
               </div>
             {% endif %}
             <!-- Navbar Right Side -->
            
+<!--student <img class="papa" style="width:5%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Student_icon.svg/1024px-Student_icon.svg.png">-->
+<!--teacher <img class="papa" style="width:5%" src="media\pics\teacher-svgrepo-com.svg">-->
+<!--employer <img class="papa" style="width:5%" src="https://icon-library.com/images/icon-employee/icon-employee-5.jpg">Apply as an Employer</h3>-->
+              <div class="navbar-nav">
+                {% if user.is_authenticated %}
+                   {% if request.user.is_employee %}
+                <a class="nav-item nav-link" style="color:white">
+                Welcome, {{user.first_name}}
+                </a>
+                <a class="nav-item nav-link" 
+                href="{% url 'logout' %}">Logout
+                </a>
 
-            <div class="navbar-nav">
-              {% if user.is_authenticated %}
-               <a class="nav-item nav-link" >
-               Hello, {{user.first_name}}
-              </a>
-              <a class="nav-item nav-link" 
-               href="{% url 'logout' %}">Logout
-              </a>
-
-              {%else%}
-       
-            {%endif%}
-            </div>
+                  {% elif request.user.is_teacher%}
+                    <a class="nav-item nav-link" style="color:white">
+                <img class="papa" style="width:2.5%" src="media\pics\teacher-svgrepo-com.svg">Welcome Teacher, {{user.first_name}}
+                </a>
+                <a class="nav-item nav-link"
+                href="{% url 'logout' %}">Logout
+                </a>
+                {%else%}
+                
+                    <a class="nav-item nav-link" style="color:white;">
+                Welcome, {{user.first_name}} 
+                    </a>
+                <a class="nav-item nav-link" style="margin-left:3%;" 
+                href="{% url 'logout' %}">Logout
+                </a>
+                {%endif%}
+                {%else%}
+        
+              {%endif%}
+              </div>
           </div>
         </div>
       </nav>
