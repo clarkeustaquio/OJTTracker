@@ -375,16 +375,16 @@ def task(request):
             user=user, is_send=False, date_created=datetime.now())
 
         if request.method =='POST':     
-            if request.POST['start_time'] < request.POST['end_time']:
-                return render(request, 'blog/about.html', {
-                    'task_list':task_list,
-                    'task_type': task_type,
-                })
-            else:
-                return render(request, 'blog/about.html', {
-                    'task_list':task_list,
-                    'task_type': task_type,
-                })
+            # if request.POST['start_time'] < request.POST['end_time']:
+            #     return render(request, 'blog/about.html', {
+            #         'task_list':task_list,
+            #         'task_type': task_type,
+            #     })
+            # else:
+            #     return render(request, 'blog/about.html', {
+            #         'task_list':task_list,
+            #         'task_type': task_type,
+            #     })
 
             task = TaskList.objects.create(
                 user=user,
@@ -887,5 +887,5 @@ def view_employee_student_dashboard(request, id):
                     hour = int(total_time_spent // 3600)
                     latest_hours += hour
 
-def test(request):
-    return render(request, 'services/employee_request.html')
+# def test(request):
+#     return render(request, 'services/employee_request.html')
