@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Admin</title>
+    </head>
+    <body>
+        <form action="{% url 'admin_panel' %}" method="POST">
+            {% csrf_token %}
+            <input class="form-control" type="text" name="username" placeholder="Username"/>
+            <input class="form-control" type="password" name="password" placeholder="*****"/>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+    </body>
+</html>

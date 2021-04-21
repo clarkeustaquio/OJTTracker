@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Admin</title>
+    </head>
+    <body>
+        Home
+        <form action="{% url 'admin_logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+
+       <form action="{% url 'admin_home' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input name="first_name" type="text" class="form-control" placeholder="First Name *" value="" required/>
+            </div>
+
+            <div class="form-group">
+                <input name="last_name" type="text" class="form-control" placeholder="Last Name *" value="" required/>
+            </div>
+
+            <div class="form-group">
+                <input name="username" type="text" class="form-control" placeholder="Your Username *" value="" />
+            </div>
+
+            <div class="form-group">
+                <input name="email" type="email" class="form-control" placeholder="Your Email *" value="" />
+            </div>
+            
+            <div class="form-group">
+                <input name="password1" type="password" class="form-control" placeholder="Password *" value="" required/>
+            </div>
+
+            <div class="form-group">
+                <input name="password2" type="password" class="form-control"  placeholder="Confirm Password *" value="" required/>
+            </div>
+
+            <input type="submit" class="btnRegister"  value="Register"/>
+        </form>
+
+        {% for employee in employees %}
+            {% if employee.is_employee %}
+                {% if employee.is_confirm_employer %}
+                    <h5>{{ employee.last_name }}, {{ employee.first_name }}</h5>
+                {% endif %}
+            {% endif %}
+           
+        {% endfor %}
+    </body>
+</html>

@@ -99,6 +99,7 @@
          </div>
          <div class="modal-body">
      <canvas id="myChart"></canvas>
+     <button onclick="myFunction()">Click</button>
      </div>
     </div>
   </div>
@@ -284,6 +285,8 @@
     var essential_hour = "{{ essential_hour }}"
     var nonessential_hour = "{{ non_essential_hour }}"
 
+
+    var chart_type = "bar"
 /**BAR CHART  */
     var myChart = document.getElementById('myChart').getContext('2d');
         //Global Options
@@ -292,7 +295,7 @@
     Chart.defaults.font.color = '#777';
    
     var allChart = new Chart(myChart, {
-        type:'bar',//bar, pie chart, line..etc.
+        type: "bar",//bar, pie chart, line..etc.
         data:{
             labels:['Total Hours Reached: ' + total_hour,'Required Hours: 500'],
             datasets:[{
@@ -342,6 +345,11 @@
     }
     });
 
+    function myFunction(){
+      chart_type = 'line';
+       allChart.options.plugins.title.text = 'new title';
+    allChart.update();
+    }
 
 
 /**PIE CHART  */

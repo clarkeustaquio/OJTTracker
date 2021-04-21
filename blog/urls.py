@@ -36,6 +36,9 @@ urlpatterns = [
     # Instructor
     path('instructor-home/', views.teacher_home, name='teacher_home'),
     path('instructor-manage/', views.teacher_manage, name='teacher_manage'),
+    # path('section/', views.section, name='section'),
+    path('student-dashboard/', views.section, name='section'),
+    path('delete-section/<int:section_id>/', views.delete_section, name='delete_section'),
 
     # Send reqeust
     path('send-request/<int:id>/', views.send_request, name='send_request'),
@@ -50,7 +53,14 @@ urlpatterns = [
 
     path('submit-report/', views.submit_report, name='submit_report'),
     path('approve-student-task/<int:student_id>/<int:id>/', views.approve_student_task, name='approve_student_task'),
-    path('approve-student-all/<int:id>/', views.approve_student_all, name='approve_student_all')
+    path('approve-student-all/<int:id>/', views.approve_student_all, name='approve_student_all'),
+
+
+    # ADMIN
+    path('admin-panel/', views.admin_panel, name='admin_panel'),
+    path('admin-home/', views.admin_home, name='admin_home'),
+    path('admin-logout/', views.admin_logout, name='admin_logout'),
+    path('confirmation-success/<uid>/<token>/', views.confirmation_success_employee, name='confirmation_success_employee')
 ]
 
 

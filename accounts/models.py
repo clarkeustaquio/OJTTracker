@@ -9,6 +9,9 @@ class CustomUser(AbstractUser):
     is_switch = models.BooleanField(default=False)
     is_send = models.BooleanField(default=False)
 
+    school_name = models.CharField(max_length=150, default='New Era')
+    section_code = models.CharField(max_length=150, default='None')
+
     is_employee = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
 
@@ -34,6 +37,9 @@ class CustomUser(AbstractUser):
     # Teacher - Student
     pending_teacher = models.BooleanField(default=False)
     accept_teacher = models.BooleanField(default=False)
+
+    # Send Email to Employer
+    is_confirm_employer = models.BooleanField(default=False)
 
 
 

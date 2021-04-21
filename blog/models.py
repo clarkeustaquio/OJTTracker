@@ -34,3 +34,20 @@ class TaskList(models.Model):
     def __str__(self):
         return self.task
 
+class Section(models.Model):
+    section_name = models.CharField(max_length=150)
+    section_code = models.CharField(max_length=50, unique=True)
+    students = models.ManyToManyField(CustomUser, blank=True)
+    school_name = models.CharField(max_length=150, default='New Era')
+
+    def __str__(self):
+        return self.section_name
+
+    def update_code(self):
+        section_id = self.id
+        generate_code = 'SC' + "{0:03}".format(section_id)
+        Section.objects.filter(id=section_id).update(section_code=generate_code)
+
+    def save(self, *args, **kwargs):
+        super(Section, self).save(*args, **kwargs)
+        self.update_code()

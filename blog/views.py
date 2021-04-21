@@ -6,21 +6,20 @@ from django.contrib import messages
 
 from datetime import datetime, date
 
-from .models import Destination, TaskList, TaskType
+from .models import Destination, TaskList, TaskType, Section
 from accounts.models import CustomUser
 
 from .forms import ListForm
 
 from .services.teacher_request import teacher_request, account_activation_token
 from .services.employee_request import employee_request
-
+from .services.send_employer_request import send_employer_request
 # For email 
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-
 
 def login(request):
     if request.method =='POST':
@@ -129,6 +128,18 @@ def loginemployer(request):
         return render(request, 'blog/loginemployer.html')
 
 def registration_student(request):
+
+    schools = [
+        'New Era Branch 1',
+        'New Era Branch 2',
+        'New Era Branch 3',
+        'New Era Branch 4'
+    ]
+
+    context = {
+        'schools': schools
+    }
+
     if request.method == 'POST':
         first_name= request.POST['first_name']
         last_name= request.POST['last_name']
@@ -136,6 +147,8 @@ def registration_student(request):
         password1= request.POST['password1']
         password2= request.POST['password2']
         email= request.POST['email']
+        section_code = request.POST['section_code']
+        school_name = request.POST['school_name']
 
         if password1==password2:
             if CustomUser.objects.filter(username=email).exists():
@@ -152,29 +165,44 @@ def registration_student(request):
                     return redirect('registration_student')
                 else:
                     if employee.is_employee:
-                        user = CustomUser.objects.create_user(
-                            username=email, 
-                            password=password1, 
-                            email=email,
-                            first_name=first_name,
-                            last_name=last_name,
-                            my_employee=employee    
-                        )
-                        user.is_student = True
-                        user.save()
+                        try:
+                            section = Section.objects.get(section_code=section_code)
+                        except Section.DoesNotExist:
+                            messages.info(request,'Invalid Section Code!')
+                            return redirect('registration_student')
+                        else:
+                            if section.school_name != school_name:
+                                messages.info(request,'{} does not exsit in {}!'.format(section_code, school_name))
+                                return redirect('registration_student')
+                            else:
+                                user = CustomUser.objects.create_user(
+                                    username=email, 
+                                    password=password1, 
+                                    email=email,
+                                    first_name=first_name,
+                                    last_name=last_name,
+                                    my_employee=employee,
+                                    school_name=school_name,
+                                    section_code=section_code
+                                )
+                                user.is_student = True
+                                user.save()
 
-                        employee.employer_student.add(user)
+                                employee.employer_student.add(user)
 
-                        employee_request(    
-                            email_to=employee.email,
-                            name=employee.first_name.title(),
-                            user_pk=user.pk,
-                            user=user,
-                            student_email=email
-                        )
-                        messages.info(request,'User Created!')
+                                employee_request(    
+                                    email_to=employee.email,
+                                    name=employee.first_name.title(),
+                                    user_pk=user.pk,
+                                    user=user,
+                                    student_email=email
+                                )
 
-                        return redirect('/')
+                                section.students.add(user)
+
+                                messages.info(request,'User Created!')
+
+                                return redirect('/')
                     else:
                         messages.info(request,'Invalid employer email')
                         return redirect('registration_student')
@@ -182,15 +210,27 @@ def registration_student(request):
             messages.info(request,'Password not matching!')
         return redirect('registration_student')
     else:
-        return render(request, 'blog/registration_student.html')
+        return render(request, 'blog/registration_student.html', context)
 
 def registration_dean(request):
+    schools = [
+        'New Era Branch 1',
+        'New Era Branch 2',
+        'New Era Branch 3',
+        'New Era Branch 4'
+    ]
+
+    context = {
+        'schools': schools
+    }
+
     if request.method == 'POST':
         first_name= request.POST['first_name']
         last_name= request.POST['last_name']
         password1= request.POST['password1']    
         password2= request.POST['password2']
         email= request.POST['email']
+        school_name = request.POST['school_name']
         # phone = request.POST['phone']
         # question = request.POST['question']
         # answer = request.POST['answer']
@@ -214,6 +254,7 @@ def registration_dean(request):
                     email=email, 
                     first_name=first_name,
                     last_name=last_name,
+                    school_name=school_name
                     # phone=phone,
                     # question=question,
                     # answer=answer,
@@ -227,7 +268,7 @@ def registration_dean(request):
             messages.info(request,'Password not matching!')
         return redirect('registration_dean')
     else:
-        return render(request, 'blog/registration_dean.html')
+        return render(request, 'blog/registration_dean.html', context)
 
 def registration_employer(request):
     if request.method == 'POST':
@@ -236,13 +277,15 @@ def registration_employer(request):
         password1= request.POST['password1']
         password2= request.POST['password2']
         email= request.POST['email']
+        username = request.POST['username']
+
         # phone = request.POST['phone']
         # question = request.POST['question']
         # answer = request.POST['answer']
         # gender = request.POST['gender']
 
         if password1 == password2:
-            if CustomUser.objects.filter(username=email).exists():
+            if CustomUser.objects.filter(username=username).exists():
                 messages.info(request,'Email Taken')
                 return redirect('registration_employer')
             elif CustomUser.objects.filter(email=email).exists():
@@ -254,7 +297,7 @@ def registration_employer(request):
             #         is_male = True
 
                 employer = CustomUser.objects.create_user(
-                    username=email, 
+                    username=username, 
                     password=password1, 
                     email=email, 
                     first_name=first_name,
@@ -264,11 +307,12 @@ def registration_employer(request):
                     # answer=answer,
                     # is_male=is_male
                 )
+
                 employer.is_employee = True
                 employer.save()
                 messages.info(request,'User Created!')
                 
-                return redirect('/')
+                return redirect('/admin-home')
         else:
             messages.info(request,'Password not matching!')
         return redirect('registration_employer')
@@ -907,5 +951,136 @@ def view_employee_student_dashboard(request, id):
                 'blog/student_employee_dashboard.html',
                 context
             )
+
+def section(request):
+    username = request.user.username
+    user = CustomUser.objects.get(username=username)
+
+    if request.method == 'POST':
+        section_name = request.POST['section_name']
+
+        section = Section.objects.create(
+            section_name=section_name,
+            school_name=user.school_name
+        )
+
+        return redirect('/student-dashboard')
+    elif request.method == 'GET':
+        sections = Section.objects.filter(school_name=user.school_name)
+
+        print(sections)
+        for section in sections:
+            print(section.students.all(
+
+            ))
+        context = {
+            'sections': sections
+        }
+        return render(request, 'blog/section.html', context)
+
+def delete_section(request, section_id):
+    if request.method == 'POST':
+        section = Section.objects.get(id=section_id)
+
+        section.delete()
+
+        return redirect('/student-dashboard')
+
+
 def test(request):
     return render(request, 'services/employee_request.html')
+
+def admin_panel(request):
+    if request.method == 'GET':
+        return render(request, 'blog/admin_land.html')
+    elif request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = auth.authenticate(username=username, password=password)
+        
+        if user is not None:
+            auth.login(request,user)
+            return redirect('/admin-home')
+        else:
+            messages.info(request,'Invalid Credentials')
+            return redirect('/admin-panel')
+
+        return redirect('/admin-home')
+
+@login_required(login_url='/admin-panel')
+def admin_home(request):
+    if request.method == 'GET':
+        employees = CustomUser.objects.all()
+        context = {
+            'employees': employees
+        }
+        return render(request, 'blog/admin.html', context)
+    elif request.method == 'POST':
+        first_name= request.POST['first_name']
+        last_name= request.POST['last_name']
+        password1= request.POST['password1']
+        password2= request.POST['password2']
+        email= request.POST['email']
+        username = request.POST['username']
+
+        if password1 == password2:
+            if CustomUser.objects.filter(username=username).exists():
+                messages.info(request,'Email Taken')
+                return redirect('registration_employer')
+            elif CustomUser.objects.filter(email=email).exists():
+                messages.info(request,'Email Taken')
+                return redirect('registration_employer')
+            else:
+                employer = CustomUser.objects.create_user(
+                    username=username, 
+                    password=password1, 
+                    email=email, 
+                    first_name=first_name,
+                    last_name=last_name,
+                )
+
+                employer.is_employee = True
+                employer.save()
+
+                is_success = send_employer_request(
+                    email_to=email,
+                    name=first_name.title(),
+                    user_pk=employer.pk,
+                    user=employer,
+                    username=username,
+                    password=password1
+                )
+  
+                messages.info(request,'User Created!')
+                
+                return redirect('/admin-home')
+        else:
+            messages.info(request,'Password not matching!')
+        return redirect('/admin-home')
+
+def confirmation_success_employee(request, uid, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uid))
+    except ValueError as e:
+        return render(request, 'errors/send_employer_request.html')
+    else:
+        try:
+            user = CustomUser.objects.get(pk=uid)
+        
+        except ValueError as e:
+            return render(request, 'errors/send_employer_request.html')
+        else:
+            if user is not None and account_activation_token.check_token(user, token):
+                user.is_confirm_employer = True
+                user.save()
+                return render(request, 'success/send_employer_request.html')
+            else:
+                return render(request, 'errors/send_employer_request.html')
+
+            return redirect('/')
+
+def admin_logout(request):
+    auth.logout(request)
+    return redirect('/admin-panel')
+
