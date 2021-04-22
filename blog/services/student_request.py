@@ -7,7 +7,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 account_activation_token = PasswordResetTokenGenerator()
 
-def student_request(email_to, name, user_pk, user):
+def student_request(email_to, name, user_pk, user, instructor_name):
     try:
         subject = 'Tracer'
         message = 'Confirm Student Request'
@@ -23,7 +23,8 @@ def student_request(email_to, name, user_pk, user):
                 'name': name,
                 'uid': urlsafe_base64_encode(force_bytes(user_pk)),
                 'domain': site,
-                'token': account_activation_token.make_token(user)
+                'token': account_activation_token.make_token(user),
+                'instructor_name': instructor_name
             })
         )
 

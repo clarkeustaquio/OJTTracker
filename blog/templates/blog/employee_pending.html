@@ -15,7 +15,7 @@
             <tbody class="text-center">
                 {% for student in students %}
                 
-                    {% if student.is_student_approve == None %}
+                    {% if not student.is_student_approve %}
                         <tr>
                             <th>{{ student.first_name }}</th>
                             <td>{{ student.last_name }}</td>

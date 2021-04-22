@@ -6,17 +6,19 @@
 
 
 {% if user.is_authenticated %}
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <a class="nav-item nav-link" >
-          <h4>{{student}}'s Dashboard </h4>
-      </a>
-      </div>
-      <div class="col">
-        <a href="{% url 'teacher_home' %}" style="text-decoration: none;">
-          <button class="btn btn-info bg-steel float-right">Back Dashboard</button>
-      </a>
+  <div class="container mt-5">
+  <div class="container" style="margin-top: 8%">
+      <div class="row">
+        <div class="col">
+          <a class="nav-item nav-link" >
+            <h4>{{student}}'s Dashboard </h4>
+        </a>
+        </div>
+        <div class="col">
+          <a href="{% url 'teacher_home' %}" style="text-decoration: none;">
+            <button class="btn btn-info bg-steel float-right">Back Dashboard</button>
+        </a>
+        </div>
       </div>
     </div>
   </div>
