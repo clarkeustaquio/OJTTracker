@@ -60,7 +60,8 @@ urlpatterns = [
     path('admin-panel/', views.admin_panel, name='admin_panel'),
     path('admin-home/', views.admin_home, name='admin_home'),
     path('admin-logout/', views.admin_logout, name='admin_logout'),
-    path('confirmation-success/<uid>/<token>/', views.confirmation_success_employee, name='confirmation_success_employee')
+    path('confirmation-success/<uid>/<token>/', views.confirmation_success_employee, name='confirmation_success_employee'),
+    path('login_home',views.login_home,name='login_home')
 ]
 
 

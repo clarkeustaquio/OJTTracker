@@ -1098,3 +1098,9 @@ def admin_logout(request):
     auth.logout(request)
     return redirect('/admin-panel')
 
+
+
+def login_home(request):
+    return render(request,'blog/login_home.html')
+
+    
