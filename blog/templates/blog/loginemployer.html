@@ -33,7 +33,8 @@
                                     {%csrf_token%}
                                     <div class="form-group">
                                         <label>Your Email</label>
-                                        <input name="username" class="form-control" placeholder="Email" type="email">
+                                        {% comment %} <input name="username" class="form-control" placeholder="Email" type="email"> {% endcomment %}
+                                        <input name="username" class="form-control" placeholder="Email" type="text">
                                     </div> <!-- form-group// -->
                                     <div class="form-group">
                                         {% comment %} <a class="float-right" href="#">Forgot?</a> {% endcomment %}

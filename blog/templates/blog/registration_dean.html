@@ -59,6 +59,13 @@
                                             <div class="form-group">
                                                 <input name="password2" type="password" class="form-control"  placeholder="Confirm Password *" value="" required/>
                                             </div>
+                                            <div class="form-group">
+                                                <select name="school_name" class="custom-select">
+                                                    {% for school in schools %}
+                                                        <option>{{ school }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
                                           
                                             {% comment %} <div class="form-group">
                                                 <input name="phone" type="text" minlength="10" maxlength="10" class="form-control" placeholder="Your Phone *" value="" />

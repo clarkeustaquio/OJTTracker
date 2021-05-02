@@ -52,6 +52,17 @@
                                         <div class="form-group">
                                             <input type="text" class="form-control" placeholder="Employee Email" name="employee_email" required/>
                                         </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Section Code" name="section_code" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <select name="school_name" class="custom-select">
+                                                {% for school in schools %}
+                                                    <option>{{ school }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                       
                                         <input type="Submit" class="btnRegister" />
                                     </div>
                                     </form>

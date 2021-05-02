@@ -1,51 +1,61 @@
  {% extends "blog/base.html"%}
 
 {% block content %}
-<body style="margin-top:6%">
-        <table class="table table-striped">
-            <thead class="text-center">
-                <tr>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+</head>
+<body style="margin-top:5%">
+
+    <table id="student" class="table table-bordered dt-responsive">
+        <thead class="text-center">
+            <tr>
+                <th scope="col">ID</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Action</th>
-                </tr>
-            </thead>
-            
-            <tbody class="text-center">
-                {% for student in students %}
-                
-                    {% if not student.is_student_approve %}
-                        <tr>
-                            <th>{{ student.first_name }}</th>
-                            <td>{{ student.last_name }}</td>
-                            <td>{{ student.username }}</td>
-                            <td>
-                                <form action="{% url 'approve_student' student.id %}" method="POST">
-                                    {%csrf_token%}
-                                    <button type="submit" class="btn btn-primary">
-                                        Approve
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        
-                    {% endif %}
+            </tr>
+        </thead>
+        <tbody class="text-center">   
+            {% for student in students %}
+                {% if not student.is_student_approve %}
+                    <tr>
+                        <th>{{ student.id }}</th>
+                        <th>{{ student.first_name }}</th>
+                        <td>{{ student.last_name }}</td>
+                        <td>{{ student.username }}</td>
+                        <td>
+                            <form action="{% url 'approve_student' student.id %}" method="POST">
+                                {%csrf_token%}
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Approve
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    
+                {% endif %}
   
-                     {% empty %}
-<div class=" alert alert-warning alert-dismissible fade show" style="width:50%; margin-left:25%;" role="alert">
- 
-                <button style ="position: absolute;
-                top: 8px;
-                right: 16px; " type="button" class= "btn btn-outline-danger " data-dismiss="alert" aria-label="Close"><i class="fas fa-times "></i></button>
-                
-                <strong ><h4 class=" text-center">No Student Request </h4></strong> 
-</div>
-
-
+                {% empty %}
+                    <div class=" alert alert-warning alert-dismissible fade show" style="width:50%; margin-left:25%;" role="alert">
+                        <button style ="position: absolute; top: 8px; right: 16px; " type="button" class= "btn btn-outline-danger" data-dismiss="alert" aria-label="Close"><i class="fas fa-times "></i></button>
+                        <strong ><h4 class=" text-center">No Student Request </h4></strong> 
+                    </div>
                 {% endfor %}
-            </tbody>
-        </table>
-  
+        </tbody>
+    </table>
 <body>
+<script>
+  $(document).ready(function(){
+      $('#student').DataTable( {
+          "pagingType": "full_numbers",
+          "searching": true,
+          "ordering": false,
+          "lengthChange": false,
+      } );
+  });
+</script>
 {% endblock content%}
