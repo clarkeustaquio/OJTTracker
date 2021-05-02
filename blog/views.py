@@ -1038,38 +1038,40 @@ def admin_home(request):
 
         if password1 == password2:
             if CustomUser.objects.filter(username=username).exists():
-                messages.info(request,'Email Taken')
-                return redirect('registration_employer')
+                messages.info(request,'Username Taken')
+                return redirect('/admin-home')
             elif CustomUser.objects.filter(email=email).exists():
                 messages.info(request,'Email Taken')
-                return redirect('registration_employer')
-            else:
-                employer = CustomUser.objects.create_user(
-                    username=username, 
-                    password=password1, 
-                    email=email, 
-                    first_name=first_name,
-                    last_name=last_name,
-                )
-
-                employer.is_employee = True
-                employer.save()
-
-                is_success = send_employer_request(
-                    email_to=email,
-                    name=first_name.title(),
-                    user_pk=employer.pk,
-                    user=employer,
-                    username=username,
-                    password=password1
-                )
-  
-                messages.info(request,'User Created!')
-                
                 return redirect('/admin-home')
+            else:
+                try:
+                    employer = CustomUser.objects.create_user(
+                        username=username, 
+                        password=password1, 
+                        email=email, 
+                        first_name=first_name,
+                        last_name=last_name,
+                    )
+                except Exception as e:
+                    print(e)
+                else:
+                    employer.is_employee = True
+                    employer.save()
+
+                    is_success = send_employer_request(
+                        email_to=email,
+                        name=first_name.title(),
+                        user_pk=employer.pk,
+                        user=employer,
+                        username=username,
+                        password=password1
+                    )
+    
+                    messages.info(request,'User Created!')
+                    return redirect('/admin-home')
         else:
             messages.info(request,'Password not matching!')
-        return redirect('/admin-home')
+            return redirect('/admin-home')
 
 def confirmation_success_employee(request, uid, token):
     try:

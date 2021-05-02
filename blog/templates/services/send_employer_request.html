@@ -194,8 +194,11 @@
                         <tr>
                             <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
                                 <h1 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal;">Hello {{ name }}!</h1>
+                                <p>Full Name: {{ last_name }}, {{ name }}</p>
+                                <p>Email: {{ email }}</p>
                                 <p>Username: {{ username }}</p>
                                 <p>Password: {{ password }}</p>
+
                                 <p class="text-wrap" style="margin: 0 0 10px; color: #333333;">You can now login to your account using the username and password provided.</p>
                                 <a class="block" href="http://{{ domain }}{{ uid }}/{{ token }}" style="text-decoration: none; color: white;">Confirm Request</a>
                                 <span style="display:block; text-align: center; margin-top: 10%"> &lt; This is an auto-generated email. Please do not reply &gt; </span>

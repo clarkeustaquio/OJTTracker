@@ -20,12 +20,14 @@ def send_employer_request(email_to, name, user_pk, user, username, password):
             subject, message, email_from, email_to,
             fail_silently=True,
             html_message=render_to_string('services/send_employer_request.html', {
-                'name': name,
+                'name': name.upper(),
                 'uid': urlsafe_base64_encode(force_bytes(user_pk)),
                 'domain': site,
                 'token': account_activation_token.make_token(user),
                 'username': username,
-                'password': password
+                'password': password,
+                'last_name': user.last_name.upper(),
+                'email': user.email
             })
         )
     except Exception as e:

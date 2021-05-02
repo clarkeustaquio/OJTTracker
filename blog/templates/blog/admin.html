@@ -27,6 +27,11 @@
     <div class="container mt-3">
         <h5>Employer Creation</h5>
         <hr></hr>
+        {%for message in messages %}
+            <div class="alert alert-info" role="alert">
+                {{ message }}
+            </div>
+        {%endfor%}
         <form action="{% url 'admin_home' %}" method="POST">
             {% csrf_token %}
             <div class="row">
