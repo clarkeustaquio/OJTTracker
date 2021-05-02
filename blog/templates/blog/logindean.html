@@ -12,22 +12,21 @@
                         <a class="btn btn-primary btn-white btn-lg btn-block" href="{% url 'registration_dean' %}" >Create an Account</a><br/>
                     </div>
                     <div class="col-md-9 register-right">
-                        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                            <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="{% url 'login' %}" role="tab" aria-controls="profile" aria-selected="false">Student</a>
-                                
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="{% url 'logindean' %}" role="tab" aria-controls="home" aria-selected="true">Instructor</a>
-                                
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="{% url 'loginemployer' %}" role="tab" aria-controls="profile" aria-selected="fasle">Employer</a>
-                             </li>
-                        </ul>
+                       
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <h3 class="register-heading"><img class="papa" style="width:5%" src="media\pics\teacher-svgrepo-com.svg">Login as Instructor</h3>
+                                                {%for message in messages%} 
+                                               <div class=" alert alert-warning alert-dismissible fade show" style="width:50%; margin-left:25%; margin-top:5%;" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                        </button>
+                
+                <strong > <h4 style="color:#11111">{{message}}</h4></strong>   
+                                                </div> 
+                                        
+
+                                                 {%endfor%}
+                                <h3 class="register-heading"><img class="papa" style="width:5%" src="https://www.pngrepo.com/download/190758/teacher.png">Login as Instructor</h3>
                    <div class="row register-form">
                                     <div class="col-md-8" style="margin-left:100px" >
                                   <form action="" method="post">
@@ -52,9 +51,7 @@
                                 </form>
                                 </div>
                                                 <div>
-                                                {%for message in messages%}
-                                                    <h3>{{message}}</h3>
-                                                {%endfor%}
+                                            
                                                 </div>
                             </div>
                          

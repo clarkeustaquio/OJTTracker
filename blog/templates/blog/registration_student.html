@@ -12,20 +12,21 @@
                         <a class="btn btn-primary btn-white btn-lg btn-block" href="{% url 'login' %}" >Login</a><br/>
                     </div>
                     <div class="col-md-9 register-right">
-                        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="{% url 'registration_student' %}" role="tab" aria-controls="home" aria-selected="true">Student</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="{% url 'registration_dean' %}" role="tab" aria-controls="profile" aria-selected="false">Instructor</a>
-                                
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="{% url 'registration_employer' %}" role="tab" aria-controls="profile" aria-selected="fasle">Employer</a>
-                             </li>
-                        </ul> 
+                       
                         <div class="tab-content" id="myTabContent">
+
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                 {%for message in messages%} 
+                                               <div class=" alert alert-warning alert-dismissible fade show" style="width:50%; margin-left:25%; margin-top:5%;" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                        </button>
+                
+                <strong > <h4 style="color:#11111">{{message}}</h4></strong>   
+                                                </div> 
+                                        
+
+                                                 {%endfor%}
                                <h3 class="register-heading"><img class="papa" style="width:5%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Student_icon.svg/1024px-Student_icon.svg.png">Apply as a Student</h3> 
                    <div class="row register-form">
                                     <div class="col-md-6">
@@ -67,11 +68,7 @@
                                     </div>
                                     </form>
                                 </div>
-                                                <div>
-                                                {%for message in messages%}
-                                                    <h3>{{message}}</h3>
-                                                {%endfor%}
-                                                </div>
+                                
                             </div>
                          
                         </div>

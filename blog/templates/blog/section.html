@@ -10,7 +10,7 @@
                 <form action="{% url 'section' %}" method="POST">
                     {% csrf_token %}
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Section name" name="section_name">
+                        <input type="text" class="form-control" placeholder="Section name" name="section_name" required>
                         <button type="submit" class="btn btn-primary" type="button">Add Section</button>
                     </div>
                 </form>
@@ -26,8 +26,8 @@
             <h5 class="font-weight-bold">{{ section.section_name }} - {{ section.section_code }}</h5>
             
              {% if section.students.all|length > 0 %}
-                    <table id="student" class="table table-striped dt-responsive">
-                        <thead class="bg-dark text-white">
+                    <table id="student" class="table table-bordered dt-responsive text-center">
+                        <thead class="text-center">
                             <tr>
                             <th>Student #</th>
                             <th>First</th>
@@ -46,7 +46,7 @@
                                     <td>
                                         <form action="{% url 'view_student_dashboard' student.id %}" method="POST">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-primary" block>View Dashboard</button>
+                                            <button type="submit" class="btn btn-primary btn-block" block>View Dashboard</button>
                                         </form>
                                     </td>
                                 </tr>

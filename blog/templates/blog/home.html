@@ -1,4 +1,237 @@
 {%extends "blog/base.html"%}
+
+{%block content%}
+<div class = "container"  style="margin-top:8%">
+<div class = "row justify-content-start">
+
+<div class= "col-3" >
+  <div class="card">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" onclick="overall()"><a type="button">Overall Status of OJT</a></li>
+      <li class="list-group-item" onclick="latest()"> <a type="button">Latest Work Time Spent</a></li>
+      <li class="list-group-item" onclick="accomplish()"> <a type="button">Total Number of Accomplished Tasks</a></li>
+    </ul>
+  </div>
+</div>
+ <div class ="col-9">
+    <div class="card">
+        <div class="card-body" >
+          <div class="container">
+            <div class= "row">
+              <div class="col">
+                <nav class="navbar navbar-expand-lg ">
+                  <div class="collapse navbar-collapse" >
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link font-weight-bold" type="button" id="bar">Bar Chart</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link font-weight-bold" type="button" id="line" >Line Chart</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link font-weight-bold"  type="button" id="pie">Pie Chart</a>
+                      </li>
+                    </ul>
+                  </div>
+                </nav>
+              </div>
+            </div>
+        </div>
+        <hr>
+          <canvas id="dynamic-chart" width="auto" height="auto"></canvas>
+        </hr>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+<script>
+    var total_hour = "{{ total_hour }}"
+    var essential_count = "{{ essential }}"
+    var nonessential_count = "{{ non_essential }}"
+    var essential_hour = "{{ essential_hour }}"
+    var nonessential_hour = "{{ non_essential_hour }}"
+
+    var latest_hour = "{{ latest_hour }}"
+    var latest_essential = "{{ latest_essential }}"
+    var latest_non_essential = "{{ latest_non_essential }}"
+    var latest_essential_hour = "{{ latest_essential_hour }}"
+    var latest_non_essential_hour = "{{ latest_non_essential_hour }}"
+
+    const bar = document.getElementById('bar');
+    const line = document.getElementById('line');
+    const pie = document.getElementById('pie');
+
+    line.addEventListener('click', changeline);
+    bar.addEventListener('click', changebar);
+    pie.addEventListener('click', changepie)
+
+  
+    const ctx = document.getElementById('dynamic-chart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels:['Total Hours Reached: ' + total_hour,'Required Hours: 500'],
+          datasets:[{
+              label:'Hour Indicator for OJT Worktime',
+              data:[
+                total_hour,
+                500
+              ],
+              
+              backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+              borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+              borderWidth: 1
+          }]
+      },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    function overall(){
+      myChart.config.data = {
+          labels:['Total Hours Reached: ' + total_hour,'Required Hours: 500'],
+          datasets:[{
+              label:'Hour Indicator for OJT Worktime',
+              data:[
+                total_hour,
+                500
+              ],
+              backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+              borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+              borderWidth: 1
+          }]
+      };
+      myChart.update();
+    }
+
+    function latest(){
+      myChart.config.data = {
+            labels:['Essential Tasks','Non-Essential Tasks', 'Essential Hours', 'Non-Essential Hours'],
+            datasets:[{
+                label:'Hour Indicator for Two Types of Time Spent',
+                data:[
+                  latest_essential,
+                  latest_non_essential,
+                  latest_essential_hour,
+                  latest_non_essential_hour
+                ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                borderWidth: 1
+            }]
+      };
+      myChart.update();
+    }
+
+    function accomplish(){
+      myChart.config.data = {
+            labels:['Essential Task','Non Essential Task'],
+            datasets:[{
+                label:'Hour Indicator for Accomplished Tasks',
+                data:[
+                  essential_hour,
+                  nonessential_hour
+                ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+      };
+      myChart.update();
+    }
+
+    function changeline(){
+        const updatetype='line';
+        myChart.config.type=updatetype;
+        myChart.update();
+     
+    }
+
+    function changebar(){
+        const updatetype='bar';
+        myChart.config.type=updatetype;
+        myChart.update();
+     
+    }
+
+    function changepie(){
+        const updatetype='pie';
+        myChart.config.type=updatetype;
+        myChart.update();
+     
+    }
+</script>
+
+{% endblock content %} 
+
+
+{% comment %} {%extends "blog/base.html"%}
 <!--STUDENT DASHBOARD-->
 
 {%block content%}
@@ -295,7 +528,7 @@
    
     var allChart = new Chart(myChart, {
         type: "bar",//bar, pie chart, line..etc.
-        data:{
+        data: {
             labels:['Total Hours Reached: ' + total_hour,'Required Hours: 500'],
             datasets:[{
                 label:'Hour Indicator for OJT Worktime',
@@ -491,7 +724,7 @@ options:{
    
     var allChart = new Chart(myChart2, {
         type:'bar',//bar, pie chart, line..etc.
-        data:{
+        data: {
             labels:['Essential Tasks','Non-Essential Tasks', 'Essential Hours', 'Non-Essential Hours'],
             datasets:[{
                 label:'Hour Indicator for Two Types of Time Spent',
@@ -694,7 +927,7 @@ options:{
    
     var allChart = new Chart(myChart3, {
         type:'bar',//bar, pie chart, line..etc.
-        data:{
+        data: {
             labels:['Essential Task','Non Essential Task'],
             datasets:[{
                 label:'Hour Indicator for Accomplished Tasks',
@@ -865,4 +1098,4 @@ options:{
     });
 </script>
 
-{% endblock content %} 
+{% endblock content %}  {% endcomment %}

@@ -20,7 +20,8 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-
+def main(request):
+    return render(request, 'blog/login_home.html')
 def login(request):
     if request.method =='POST':
         username = request.POST['username']
@@ -49,13 +50,13 @@ def login(request):
                     return redirect('home')
                 else:
                     messages.info(request,'You are still for approval.')
-                    return redirect('/')
+                    return redirect('/login')
             else:
                 messages.info(request,'Invalid credentials')
-                return redirect('/')
+                return redirect('/login')
         else:
             messages.info(request,'Invalid credentials')
-            return redirect('/')
+            return redirect('/login')
     else:
         return render(request, 'blog/login.html')
     
@@ -202,7 +203,7 @@ def registration_student(request):
 
                                 messages.info(request,'User Created!')
 
-                                return redirect('/')
+                                return redirect('/login')
                     else:
                         messages.info(request,'Invalid employer email')
                         return redirect('registration_student')
@@ -263,7 +264,7 @@ def registration_dean(request):
                 user.is_teacher = True
                 user.save()
                 messages.info(request,'User Created!')
-                return redirect('/')
+                return redirect('/logindean')
         else:
             messages.info(request,'Password not matching!')
         return redirect('registration_dean')
@@ -575,6 +576,7 @@ def approve_student(request ,student_id):
         
 @login_required
 def employee_report(request): #Pending approval ng report summary
+    print('Dumaan')
     if request.method == 'GET':
         username = request.user.username
 
@@ -595,6 +597,8 @@ def employee_report(request): #Pending approval ng report summary
                 'reports': task
             })
 
+        print(students)
+        print(student_reports)
         context = {
             'students': students,
             'student_reports': student_reports
@@ -962,19 +966,21 @@ def view_employee_student_dashboard(request, id):
 def section(request):
     username = request.user.username
     user = CustomUser.objects.get(username=username)
-
+    
     if request.method == 'POST':
         section_name = request.POST['section_name']
 
-        section = Section.objects.create(
-            section_name=section_name,
-            school_name=user.school_name
-        )
+        if len(section_name) > 0:
+            section = Section.objects.create(
+                section_name=section_name,
+                school_name=user.school_name
+            )
 
-        return redirect('/student-dashboard')
+            return redirect('/student-dashboard')
+        else:
+            return redirect('/student-dashboard')
     elif request.method == 'GET':
         sections = Section.objects.filter(school_name=user.school_name)
-
         print(sections)
         for section in sections:
             print(section.students.all(
