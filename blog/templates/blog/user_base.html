@@ -1,0 +1,17 @@
+{% load bootstrap4 %}
+
+
+<html>
+    <head>
+        <title>{% block title %}{% endblock title %}</title>
+        {% bootstrap_css %}
+        {% bootstrap_javascript jquery='full' %}
+
+        {% block css %}{% endblock css %}
+        {% block script %}{% endblock script %}
+    </head>
+    <body>
+        {% block content %}{% endblock content %}
+        {% block script_bottom %}{% endblock script_bottom %}
+    </body>
+</html>

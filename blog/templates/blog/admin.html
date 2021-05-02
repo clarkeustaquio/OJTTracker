@@ -1,15 +1,32 @@
-<html>
-    <head>
-        <title>Admin</title>
-    </head>
-    <body>
-        Home
-        <form action="{% url 'admin_logout' %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary">Logout</button>
-        </form>
+{% extends 'blog/user_base.html' %}
+{% block title %}Admin{% endblock title %}
+{% block css %}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+{% endblock css %}
+{% block script %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+{% endblock script %}
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'admin_panel' %}">OJTTracker</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="/admin-logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-       <form action="{% url 'admin_home' %}" method="POST">
+    <div class="container mt-3">
+        <h5>Employer Creation</h5>
+        <hr></hr>
+        <form action="{% url 'admin_home' %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <input name="first_name" type="text" class="form-control" placeholder="First Name *" value="" required/>
@@ -35,16 +52,46 @@
                 <input name="password2" type="password" class="form-control"  placeholder="Confirm Password *" value="" required/>
             </div>
 
-            <input type="submit" class="btnRegister"  value="Register"/>
+            <input type="submit" class="btn btn-primary"  value="Create"/>
         </form>
 
-        {% for employee in employees %}
-            {% if employee.is_employee %}
-                {% if employee.is_confirm_employer %}
-                    <h5>{{ employee.last_name }}, {{ employee.first_name }}</h5>
-                {% endif %}
-            {% endif %}
-           
-        {% endfor %}
-    </body>
-</html>
+        <table id="admin" class="table table-striped dt-responsive">
+            <thead class="bg-dark text-white">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">First</th>
+                  <th scope="col">Last</th>
+                  <th scope="col">Username</th>
+                  <th scope="col">Email</th>
+                </tr>
+              </thead>
+              <tbody>   
+                {% for employee in employees %}
+                    {% if employee.is_employee %}
+                        {% if employee.is_confirm_employer %}
+                            <tr>
+                                <td>{{ employee.id }}</td>
+                                <td>{{ employee.first_name }}</td>
+                                <td>{{ employee.last_name }}</td>
+                                <td>{{ employee.username }}</td>
+                                <td>{{ employee.email }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+              </tbody>
+        </table>
+    </div>
+{% endblock content %}
+{% block script_bottom %}
+<script>
+  $(document).ready(function(){
+      $('#admin').DataTable( {
+          "pagingType": "full_numbers",
+          "searching": true,
+          "ordering": false,
+          "lengthChange": false,
+      } );
+  });
+</script>
+{% endblock script_bottom %}

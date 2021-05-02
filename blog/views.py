@@ -83,7 +83,7 @@ def logindean(request):
                 user.save()
 
                 auth.login(request,user)
-                return redirect('/instructor-home')
+                return redirect('/student-dashboard')
             else:
                 messages.info(request,'invalid credentials')
                 return redirect('/logindean')
@@ -125,7 +125,7 @@ def loginemployer(request):
             messages.info(request,'invalid credentials')
             return redirect('/loginemployer')
     else:
-        return render(request, 'blog/loginemployer.html')
+        return render(request, 'blog/login_employer.html')
 
 def registration_student(request):
 
@@ -503,8 +503,15 @@ def delete_list_item(request,list_id):
     return redirect('/task')
 
 def logout(request):
-    auth.logout(request)
-    return redirect('/')
+    if request.user.is_student:
+        auth.logout(request)
+        return redirect('/')
+    if request.user.is_teacher:
+        auth.logout(request)
+        return redirect('/logindean')
+    if request.user.is_employee:
+        auth.logout(request)
+        return redirect('/loginemployer')
 
 # Employer
 @login_required
@@ -1000,13 +1007,18 @@ def admin_panel(request):
         user = auth.authenticate(username=username, password=password)
         
         if user is not None:
-            auth.login(request,user)
-            return redirect('/admin-home')
+            if user.is_staff:
+                auth.login(request,user)
+                return redirect('/admin-home')
+            else:
+                messages.info(request,'Invalid admin account!')
+                return redirect('/admin-panel')
         else:
-            messages.info(request,'Invalid Credentials')
+            messages.info(request,'Invalid account credentials')
             return redirect('/admin-panel')
 
         return redirect('/admin-home')
+       
 
 @login_required(login_url='/admin-panel')
 def admin_home(request):
