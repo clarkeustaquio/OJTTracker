@@ -575,6 +575,7 @@ def approve_student(request ,student_id):
         
 @login_required
 def employee_report(request): #Pending approval ng report summary
+    print('Dumaan')
     if request.method == 'GET':
         username = request.user.username
 
@@ -595,6 +596,8 @@ def employee_report(request): #Pending approval ng report summary
                 'reports': task
             })
 
+        print(students)
+        print(student_reports)
         context = {
             'students': students,
             'student_reports': student_reports
@@ -967,7 +970,6 @@ def section(request):
         section_name = request.POST['section_name']
 
         if len(section_name) > 0:
-
             section = Section.objects.create(
                 section_name=section_name,
                 school_name=user.school_name
