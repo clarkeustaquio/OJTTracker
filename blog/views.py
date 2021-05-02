@@ -962,19 +962,22 @@ def view_employee_student_dashboard(request, id):
 def section(request):
     username = request.user.username
     user = CustomUser.objects.get(username=username)
-
+    
     if request.method == 'POST':
         section_name = request.POST['section_name']
 
-        section = Section.objects.create(
-            section_name=section_name,
-            school_name=user.school_name
-        )
+        if len(section_name) > 0:
 
-        return redirect('/student-dashboard')
+            section = Section.objects.create(
+                section_name=section_name,
+                school_name=user.school_name
+            )
+
+            return redirect('/student-dashboard')
+        else:
+            return redirect('/student-dashboard')
     elif request.method == 'GET':
         sections = Section.objects.filter(school_name=user.school_name)
-
         print(sections)
         for section in sections:
             print(section.students.all(
