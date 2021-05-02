@@ -7,7 +7,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 account_activation_token = PasswordResetTokenGenerator()
 
-def employee_request(email_to, name, user_pk, user):
+def employee_request(email_to, name, user_pk, user, student_email):
     try:
         subject = 'OJTTracker'
         message = 'Confirm Employee Request'
@@ -23,7 +23,8 @@ def employee_request(email_to, name, user_pk, user):
                 'name': name,
                 'uid': urlsafe_base64_encode(force_bytes(user_pk)),
                 'domain': site,
-                'token': account_activation_token.make_token(user)
+                'token': account_activation_token.make_token(user),
+                'student_email': student_email
             })
         )
     except Exception as e:

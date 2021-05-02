@@ -1,6 +1,12 @@
  {% extends "blog/base.html"%}
 
 {% block content %}
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+</head>
 <style> 
 input[type=text] {
   width: 20%;
@@ -20,42 +26,60 @@ input[type=text]:focus {
 }
 
 </style>
-<body style = "margin-top:6%">
-<form>
-  <i class="fas fa-search"></i><input type="text" name="search" placeholder="Search..">
-</form>
 
-  {% if students|length > 0 %}
-    <table class="table mt-4">
-      <thead class="text-center">
-        <tr>
-          <th scope="col">Student #</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Email</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody class="text-center">
-      {% for student in students %}
-        <tr>
-            <td>{{ student.id }}</td>
-            <td>{{ student.first_name}}</td>
-            <td>{{ student.last_name }}</td>
-            <td>{{ student.email }}</td>
-            <td>
-              <form action="{% url 'send_request' student.id %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-info bg-steel">Send Request</button>
-            </form>
-            </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-        
-    {% else%}
-        <h5 class="text-center mt-2">Empty students.</h5>
-    {% endif %}
+
+<body style = "margin-top:5%">
+{% comment %} <form>
+  <i class="fas fa-search"></i><input type="text" name="search" placeholder="Search..">
+</form> {% endcomment %}
+      <div class="container">
+        <div class="pb-2 pt-2 mb-3 border-bottom">
+            <h3>Students</h3>
+        </div>
+          {% if students|length > 0 %}
+        <table id="student" class="table table-striped dt-responsive text-center">
+            <thead class="bg-dark text-white">
+                <tr>
+                  <th scope="col">Student #</th>
+                  <th scope="col">First</th>
+                  <th scope="col">Last</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+              {% for student in students %}
+                <tr>
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.first_name}}</td>
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>
+                      <form action="{% url 'send_request' student.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info bg-steel">Send Request</button>
+                    </form>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+        </table>
+            
+        {% else%}
+            <h5 class="text-center mt-2">Empty students.</h5>
+        {% endif %}
+    </div>
 </body>
+
+<script>
+  console.log('Hello')
+  $(document).ready(function(){
+      $('#student').DataTable( {
+          "pagingType": "full_numbers",
+          "searching": true,
+          "ordering": false,
+          "lengthChange": false,
+      } );
+  });
+</script>
 {% endblock content%}

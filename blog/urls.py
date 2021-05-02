@@ -52,7 +52,9 @@ urlpatterns = [
     path('approve-student-task/<int:student_id>/<int:id>/', views.approve_student_task, name='approve_student_task'),
     path('approve-student-all/<int:id>/', views.approve_student_all, name='approve_student_all'),
     
-   
+    #for testing
+    path('chart',views.chart,name='chart'),
+    path('home2',views.home2,name='home2')
 ]
 
 

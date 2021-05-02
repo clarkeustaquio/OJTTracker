@@ -31,18 +31,26 @@ def login(request):
         user = auth.authenticate(username=username,password=password)
         if user is not None:
             if user.is_student:
-                date_today = dt.date.today()
+                if user.is_student_approve:
+                    date_today = dt.date.today()
 
-                if user.day_login == None:
-                    user.day_login = datetime.now()
-                elif user.day_login < date_today:
-                    user.is_send = False
-                    user.day_login = datetime.now()
-                
-                user.save()
+                    if user.day_login == None or user.previous_day == None:
+                        user.day_login = datetime.now()
+                        user.previous_day = datetime.now()
+                    elif user.day_login < date_today:
+                        user.is_send = False
+                        day_login = user.day_login
 
-                auth.login(request,user)
-                return redirect('home')
+                        user.previous_day = day_login
+                        user.day_login = datetime.now()
+                    
+                    user.save()
+
+                    auth.login(request,user)
+                    return redirect('home')
+                else:
+                    messages.info(request,'You are still for approval.')
+                    return redirect('/')
             else:
                 messages.info(request,'invalid credentials')
                 return redirect('/')
@@ -63,10 +71,14 @@ def logindean(request):
             if user.is_teacher:
                 date_today = dt.date.today()
 
-                if user.day_login == None:
+                if user.day_login == None or user.previous_day == None:
                     user.day_login = datetime.now()
+                    user.previous_day = datetime.now()
                 elif user.day_login < date_today:
                     user.is_send = False
+                    day_login = user.day_login
+
+                    user.previous_day = day_login
                     user.day_login = datetime.now()
                 
                 user.save()
@@ -92,10 +104,15 @@ def loginemployer(request):
         if user is not None:
             if user.is_employee:
                 date_today = dt.date.today()
-                if user.day_login == None:
+                if user.day_login == None or user.previous_day == None:
                     user.day_login = datetime.now()
+                    user.previous_day = datetime.now()
                 elif user.day_login < date_today:
                     user.is_send = False
+                    user.is_switch = False
+                    day_login = user.day_login
+
+                    user.previous_day = day_login
                     user.day_login = datetime.now()
 
                 user.save()
@@ -152,7 +169,8 @@ def registration_student(request):
                             email_to=employee.email,
                             name=employee.first_name.title(),
                             user_pk=user.pk,
-                            user=user
+                            user=user,
+                            student_email=email
                         )
                         messages.info(request,'User Created!')
 
@@ -375,40 +393,32 @@ def task(request):
             user=user, is_send=False, date_created=datetime.now())
 
         if request.method =='POST':     
-            # if request.POST['start_time'] < request.POST['end_time']:
-            #     return render(request, 'blog/about.html', {
-            #         'task_list':task_list,
-            #         'task_type': task_type,
-            #     })
+            print(request.POST['start_time'])
+            print(request.POST['end_time'])
+            if request.POST['start_time'] < request.POST['end_time']:
+                
+                task = TaskList.objects.create(
+                    user=user,
+                    start_time=request.POST['start_time'],
+                    task=request.POST['task'],
+                    end_time=request.POST['end_time'],
+                    task_type=request.POST['task_type']
+                )
+
+                return redirect('/task')
+            else:
+                print('Hereee')
+                return render(request, 'blog/about.html', {
+                    'task_list':task_list,
+                    'task_type': task_type,
+                })
             # else:
             #     return render(request, 'blog/about.html', {
             #         'task_list':task_list,
             #         'task_type': task_type,
-            #     })
-
-            task = TaskList.objects.create(
-                user=user,
-                start_time=request.POST['start_time'],
-                task=request.POST['task'],
-                end_time=request.POST['end_time'],
-                task_type=request.POST['task_type']
-            )
-
-            return redirect('/task')
-
-            print(request.POST)
-            forms = ListForm(request.POST)
-            if forms.is_valid():
-                forms.save()
-
-                return redirect('/task')
-                
+            #     }
         else:
-            
-            # form = ListForm()
-            
             return render(request, 'blog/about.html', {
-                # 'form':form, 
                 'task_list':task_list,
                 'task_type': task_type,
             })
@@ -551,11 +561,13 @@ def approve_student_task(request, student_id, id):
     user = CustomUser.objects.get(id=student_id)
 
     date_today = dt.date.today()
-    if employee.day_login < date_today:
+    if date_today > user.previous_day and user.is_switch == False:
         current_switch = TaskList.objects.filter(
             user=user, is_current=True, is_employee_accepted=True
         )
 
+        user.is_switch = True
+        user.save()
         for current in current_switch:
             current.is_current = False
             current.save()
@@ -566,22 +578,6 @@ def approve_student_task(request, student_id, id):
     task.is_employee_accepted = True
     task.save()
 
-
-    # tasks = TaskList.objects.filter(
-    #     user=student, 
-    #     is_send=True, 
-    #     is_employee_accepted=False
-    # )
-
-    # if len(tasks) > 0:
-    #     current_switch = TaskList.objects.filter(
-    #         user=user, is_current=True, is_employee_accepted=True)
-
-    #     for current in current_switch:
-    #         current.is_current = False
-    #         # current.save()
-    #         print(Here)
-
     return redirect('/employee_report')
 
 def approve_student_all(request, id):
@@ -590,23 +586,16 @@ def approve_student_all(request, id):
     student = CustomUser.objects.get(id=id)
 
     date_today = dt.date.today()
-    if user.day_login < date_today:
+    if date_today > user.previous_day and user.is_switch == False:
         current_switch = TaskList.objects.filter(
             user=student, is_current=True, is_employee_accepted=True
         )
 
+        user.is_switch = True
+        user.save()
         for current in current_switch:
             current.is_current = False
             current.save()
-
-
-    # current_switch = TaskList.objects.filter(
-    #     user=student, is_current=True, is_employee_accepted=True
-    # )
-
-    # for current in current_switch:
-    #     current.is_current = False
-    #     current.save()
 
     tasks = TaskList.objects.filter(
         user=student, 
@@ -690,7 +679,8 @@ def send_request(request, id):
                 email_to=student.email,
                 name=student.first_name.title(),
                 user_pk=student.pk,
-                user=student
+                user=student,
+                instructor_name=user
             )
 
             return redirect('/instructor-manage')
@@ -734,9 +724,12 @@ def success_employee_approval(request, uid, token):
             if user is not None and account_activation_token.check_token(user, token):
                 user.is_student_approve = True
                 user.save()
+
+                print('HEllo')
             
                 return render(request, 'success/employee_approval_success.html')
             else:
+                print('failed')
                 return render(request, 'errors/employee_approval_failed.html')
 
             return redirect('/employee-home')
@@ -887,5 +880,35 @@ def view_employee_student_dashboard(request, id):
                     hour = int(total_time_spent // 3600)
                     latest_hours += hour
 
-# def test(request):
-#     return render(request, 'services/employee_request.html')
+                    if task.task_type == 'Essential':
+                        latest_essential += 1
+                        latest_essential_hour += hour
+
+                    elif task.task_type == 'Non-Essential':
+                        latest_non_essential += 1
+                        latest_non_essential_hour += hour
+
+            context = {
+                'student': student.first_name.title(),
+                'total_hour': hours,
+                'essential': essential,
+                'non_essential': non_essential,
+                'essential_hour': essential_hour,
+                'non_essential_hour': non_essential_hour,
+                'latest_date': latest_date,
+                'latest_hour': latest_hours,
+                'latest_essential': latest_essential,
+                'latest_non_essential': latest_non_essential,
+                'latest_essential_hour': latest_essential_hour,
+                'latest_non_essential_hour': latest_non_essential_hour
+            }
+            return render(
+                request, 
+                'blog/student_employee_dashboard.html',
+                context
+            )
+def chart(request):
+    return render(request, 'blog/chart.html')
+
+def home2(request):
+    return render(request, 'blog/home2.html')

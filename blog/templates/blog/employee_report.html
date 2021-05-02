@@ -49,8 +49,8 @@
               {% endfor %}     
             </tbody>
           </table>
-        {% else %}
-          <h5 class="text-center mt-2">{{ report.student}} has no records.</h5>
+        {% comment %} {% else %} {% endcomment %}
+          {% comment %} <h5 class="text-center mt-2">{{ report.student}} has no records.</h5> {% endcomment %}
         {% endif %}
       {% endif %}
       {% empty %}
