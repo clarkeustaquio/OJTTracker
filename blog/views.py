@@ -51,10 +51,10 @@ def login(request):
                     messages.info(request,'You are still for approval.')
                     return redirect('/')
             else:
-                messages.info(request,'invalid credentials')
+                messages.info(request,'Invalid credentials')
                 return redirect('/')
         else:
-            messages.info(request,'invalid credentials')
+            messages.info(request,'Invalid credentials')
             return redirect('/')
     else:
         return render(request, 'blog/login.html')
@@ -85,10 +85,10 @@ def logindean(request):
                 auth.login(request,user)
                 return redirect('/student-dashboard')
             else:
-                messages.info(request,'invalid credentials')
+                messages.info(request,'Invalid credentials')
                 return redirect('/logindean')
         else:
-            messages.info(request,'invalid credentials')
+            messages.info(request,'Invalid credentials')
             return redirect('/logindean')
     else:
         return render(request, 'blog/logindean.html')
@@ -119,10 +119,10 @@ def loginemployer(request):
                 auth.login(request,user)
                 return redirect('/employee-home')
             else:
-                messages.info(request,'invalid credentials')
+                messages.info(request,'Invalid credentials')
                 return redirect('/loginemployer')
         else:
-            messages.info(request,'invalid credentials')
+            messages.info(request,'Invalid credentials')
             return redirect('/loginemployer')
     else:
         return render(request, 'blog/login_employer.html')

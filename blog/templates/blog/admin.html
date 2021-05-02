@@ -10,12 +10,13 @@
 {% endblock script %}
 {% block content %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+        <div class="container">
             <a class="navbar-brand" href="{% url 'admin_panel' %}">OJTTracker</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav mr-auto"></div>
                 <div class="navbar-nav">
                     <a class="nav-link active" aria-current="page" href="/admin-logout">Logout</a>
                 </div>
@@ -28,30 +29,44 @@
         <hr></hr>
         <form action="{% url 'admin_home' %}" method="POST">
             {% csrf_token %}
-            <div class="form-group">
-                <input name="first_name" type="text" class="form-control" placeholder="First Name *" value="" required/>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <input name="first_name" type="text" class="form-control" placeholder="First Name *" value="" required/>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input name="last_name" type="text" class="form-control" placeholder="Last Name *" value="" required/>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <input name="last_name" type="text" class="form-control" placeholder="Last Name *" value="" required/>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <input name="username" type="text" class="form-control" placeholder="Your Username *" value="" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input name="email" type="email" class="form-control" placeholder="Your Email *" value="" />
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <input name="username" type="text" class="form-control" placeholder="Your Username *" value="" />
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <input name="password1" type="password" class="form-control" placeholder="Password *" value="" required/>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input name="password2" type="password" class="form-control"  placeholder="Confirm Password *" value="" required/>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <input name="email" type="email" class="form-control" placeholder="Your Email *" value="" />
-            </div>
-            
-            <div class="form-group">
-                <input name="password1" type="password" class="form-control" placeholder="Password *" value="" required/>
-            </div>
-
-            <div class="form-group">
-                <input name="password2" type="password" class="form-control"  placeholder="Confirm Password *" value="" required/>
-            </div>
-
             <input type="submit" class="btn btn-primary"  value="Create"/>
         </form>
 

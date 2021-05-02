@@ -18,11 +18,11 @@
           
           <form action="{% url 'approve_student_all' report.student.id %}" method="POST">
             {% csrf_token %}
-            <button class="btn btn-info bg-steel float-right mb-3">Approve All</button>
+            <button class="btn btn-primary float-right mb-3">Approve All</button>
           </form>
-          <h5>{{ report.student }}</h5>
+          <h5>{{ report.student.last_name|upper }}, {{ report.student.first_name|upper }} - {{ report.student|upper }}</h5>
           
-          <table class="table table-hover table-light">
+          <table class="table table-hover table-bordered table-light">
             <thead class="text-center">
               <tr>
                 <th scope="col">Task Started</th>
@@ -42,7 +42,7 @@
                 <td>
                 <form action="{% url 'approve_student_task' report.student.id task.id %}" method="POST" class="float d-inline">
                     {%csrf_token%}
-                    <button type="submit" class="btn btn-info bg-steel">Approve</button>
+                    <button type="submit" class="btn btn-primary btn-block">Approve</button>
                 </form>
                 </td>
               </tr>       
