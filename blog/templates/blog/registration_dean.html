@@ -11,21 +11,21 @@
                         <a class="btn btn-primary btn-white btn-lg btn-block" href="{% url 'logindean' %}" >Login</a><br/>
                     </div>
                     <div class="col-md-9 register-right">
-                        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link " id="home-tab" data-toggle="tab" href="{% url 'registration_student' %}" role="tab" aria-controls="home" aria-selected="true">Student</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="{% url 'registration_dean' %}" role="tab" aria-controls="profile" aria-selected="false">Instructor</a>
-                                
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="{% url 'registration_employer' %}" role="tab" aria-controls="profile" aria-selected="fasle">Employer</a>
-                             </li>
-                        </ul>
+                       
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <h3 class="register-heading"><img class="papa" style="width:5%" src="media\pics\teacher-svgrepo-com.svg">Apply as a Instructor</h3>
+                                     {%for message in messages%} 
+                                               <div class=" alert alert-warning alert-dismissible fade show" style="width:50%; margin-left:25%; margin-top:5%;" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                        </button>
+                
+                <strong > <h4 style="color:#11111">{{message}}</h4></strong>   
+                                                </div> 
+                                        
+
+                                                 {%endfor%}
+                                <h3 class="register-heading"><img class="papa" style="width:5%" src="https://www.pngrepo.com/download/190758/teacher.png">Apply as a Instructor</h3>
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <form action="registration_dean" method="POST">
@@ -39,18 +39,7 @@
                                            <div class="form-group">
                                                 <input name="email" type="email" class="form-control" placeholder="Your Email *" value="" />
                                             </div>
-                                            {% comment %} <div class="form-group" name="gender">
-                                                <div class="maxl">
-                                                    <label class="radio inline"> 
-                                                        <input type="radio" name="gender" value="male" checked>
-                                                        <span> Male </span> 
-                                                    </label>
-                                                    <label class="radio inline"> 
-                                                        <input type="radio" name="gender" value="female">
-                                                        <span>Female </span> 
-                                                    </label>
-                                                </div>
-                                            </div> {% endcomment %}
+                                
                                         </div>
                                         <div class="col-md-6">
                                           <div class="form-group">
@@ -67,20 +56,7 @@
                                                 </select>
                                             </div>
                                           
-                                            {% comment %} <div class="form-group">
-                                                <input name="phone" type="text" minlength="10" maxlength="10" class="form-control" placeholder="Your Phone *" value="" />
-                                            </div> {% endcomment %}
-                                            {% comment %} <div class="form-group">
-                                                <select class="form-control" name="question">
-                                                    <option class="hidden"  selected disabled>Please select your Sequrity Question</option>
-                                                    <option>What is your Birthdate?</option>
-                                                    <option>What is Your old Phone Number</option>
-                                                    <option>What is your Pet Name?</option>
-                                                </select>
-                                            </div> {% endcomment %}
-                                            {% comment %} <div class="form-group">
-                                                <input name="answer" type="text" class="form-control" placeholder="Enter Your Answer *" value="" />
-                                            </div> {% endcomment %}
+                                   
                                             <input type="submit" class="btnRegister"  value="Register"/>
                                         </form>
                                         

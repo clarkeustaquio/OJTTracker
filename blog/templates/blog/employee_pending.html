@@ -21,19 +21,32 @@
         </thead>
         <tbody class="text-center">   
             {% for student in students %}
-                {% if not student.is_student_approve %}
+                {% if not student.is_student_approve and not student.finish_approval %}
                     <tr>
                         <th>{{ student.id }}</th>
                         <th>{{ student.first_name }}</th>
                         <td>{{ student.last_name }}</td>
                         <td>{{ student.username }}</td>
                         <td>
-                            <form action="{% url 'approve_student' student.id %}" method="POST">
-                                {%csrf_token%}
-                                <button type="submit" class="btn btn-primary btn-block">
-                                    Approve
-                                </button>
-                            </form>
+                            <div class="row">
+                                <div class="col mb-1">
+                                    <form action="{% url 'approve_student' student.id %}" method="POST">
+                                        {%csrf_token%}
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            Approve
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col">
+                                    <form action="{% url 'disapprove_student' student.id %}" method="POST">
+                                        {%csrf_token%}
+                                        <button type="submit" class="btn btn-danger btn-block">
+                                            Disapprove
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            
                         </td>
                     </tr>
                     

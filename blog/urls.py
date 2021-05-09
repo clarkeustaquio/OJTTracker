@@ -4,7 +4,8 @@ from . import views
 # app_name = 'blog'
 
 urlpatterns = [
-    path('', views.login, name='login'),
+    path('', views.main, name='main'),
+    path('login', views.login, name='login'),
     path('logindean', views.logindean, name ='logindean'),
     path('loginemployer', views.loginemployer, name='loginemployer'),
     path('registration_student', views.registration_student, name='registration_student'),
@@ -32,6 +33,7 @@ urlpatterns = [
 
     # Approve Student
     path('approve-student/<int:student_id>/', views.approve_student, name='approve_student'),
+    path('disapprove-student/<int:student_id>/', views.disapprove_student, name='disapprove_student'),
     
     # Instructor
     path('instructor-home/', views.teacher_home, name='teacher_home'),
@@ -51,16 +53,20 @@ urlpatterns = [
     path('view-student-dashboard/<int:id>/', views.view_student_dashboard, name='view_student_dashboard'),
     path('view-employee-student-dashboard/<int:id>/', views.view_employee_student_dashboard, name='view_employee_student_dashboard'),
 
+    # Submittion of reports
     path('submit-report/', views.submit_report, name='submit_report'),
-    path('approve-student-task/<int:student_id>/<int:id>/', views.approve_student_task, name='approve_student_task'),
-    path('approve-student-all/<int:id>/', views.approve_student_all, name='approve_student_all'),
 
+    # Approval of reports
+    path('approve-student-task/<int:student_id>/<int:id>/', views.approve_student_task, name='approve_student_task'),
+    path('disapprove-student-task/<int:student_id>/<int:id>/', views.disapprove_student_task, name='disapprove_student_task'),
+    path('approve-student-all/<int:id>/', views.approve_student_all, name='approve_student_all'),
 
     # ADMIN
     path('admin-panel/', views.admin_panel, name='admin_panel'),
     path('admin-home/', views.admin_home, name='admin_home'),
     path('admin-logout/', views.admin_logout, name='admin_logout'),
-    path('confirmation-success/<uid>/<token>/', views.confirmation_success_employee, name='confirmation_success_employee')
+    path('confirmation-success/<uid>/<token>/', views.confirmation_success_employee, name='confirmation_success_employee'),
+
 ]
 
 

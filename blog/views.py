@@ -21,6 +21,9 @@ from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
+def main(request):
+    return render(request, 'blog/login_home.html')
+
 def login(request):
     if request.method =='POST':
         username = request.POST['username']
@@ -49,13 +52,13 @@ def login(request):
                     return redirect('home')
                 else:
                     messages.info(request,'You are still for approval.')
-                    return redirect('/')
+                    return redirect('/login')
             else:
                 messages.info(request,'Invalid credentials')
-                return redirect('/')
+                return redirect('/login')
         else:
             messages.info(request,'Invalid credentials')
-            return redirect('/')
+            return redirect('/login')
     else:
         return render(request, 'blog/login.html')
     
@@ -202,7 +205,7 @@ def registration_student(request):
 
                                 messages.info(request,'User Created!')
 
-                                return redirect('/')
+                                return redirect('/login')
                     else:
                         messages.info(request,'Invalid employer email')
                         return redirect('registration_student')
@@ -263,7 +266,7 @@ def registration_dean(request):
                 user.is_teacher = True
                 user.save()
                 messages.info(request,'User Created!')
-                return redirect('/')
+                return redirect('/logindean')
         else:
             messages.info(request,'Password not matching!')
         return redirect('registration_dean')
@@ -371,16 +374,12 @@ def home(request):
         latest_non_essential = 0
         latest_essential_hour = 0
         latest_non_essential_hour = 0
-        
-        print(latest_essential)
-        print(latest_essential_hour)
 
         for task in latest_task:
             latest_date = task.date_created
             start_time = task.start_time
             end_time = task.end_time
 
-            print(task)
             if end_time > start_time:
                 time_spent = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
                 total_time_spent = time_spent.total_seconds()
@@ -388,8 +387,6 @@ def home(request):
                 hour = int(total_time_spent // 3600)
                 latest_hours += hour
 
-
-                print(task.task_type)
                 if task.task_type == 'Essential':
                     latest_essential += 1
                     latest_essential_hour += hour
@@ -435,10 +432,10 @@ def task(request):
 
         task_list = TaskList.objects.filter(
             user=user, is_send=False, date_created=datetime.now())
+        
+        task_count = len(task_list)
 
         if request.method =='POST':     
-            print(request.POST['start_time'])
-            print(request.POST['end_time'])
             if request.POST['start_time'] < request.POST['end_time']:
                 
                 task = TaskList.objects.create(
@@ -451,18 +448,16 @@ def task(request):
 
                 return redirect('/task')
             else:
-                print('Hereee')
+                messages.info(request, error)
+          
                 return render(request, 'blog/about.html', {
+                    'task_count': task_count,
                     'task_list':task_list,
                     'task_type': task_type,
                 })
-            # else:
-            #     return render(request, 'blog/about.html', {
-            #         'task_list':task_list,
-            #         'task_type': task_type,
-            #     }
         else:
             return render(request, 'blog/about.html', {
+                'task_count': task_count,
                 'task_list':task_list,
                 'task_type': task_type,
             })
@@ -570,12 +565,23 @@ def approve_student(request ,student_id):
         return redirect('/employee-pending')
     else:
         student.is_student_approve = True
+        student.finish_approval = True
         student.save()
         return redirect('/employee-pending')
-        
+
+def disapprove_student(request, student_id):
+    try:
+        student = CustomUser.objects.get(id=student_id)
+    except CustomUser.DoesNotExist:
+        return redirect('/employee-pending')
+    else:
+        student.is_student_approve = False
+        student.finish_approval = True
+        student.save()
+        return redirect('/employee-pending')
+
 @login_required
 def employee_report(request): #Pending approval ng report summary
-    print('Dumaan')
     if request.method == 'GET':
         username = request.user.username
 
@@ -588,7 +594,8 @@ def employee_report(request): #Pending approval ng report summary
             task = TaskList.objects.filter(
                 user=student, 
                 is_send=True, 
-                is_employee_accepted=False
+                is_employee_accepted=False,
+                finish_report=False
             )
 
             student_reports.append({
@@ -596,8 +603,6 @@ def employee_report(request): #Pending approval ng report summary
                 'reports': task
             })
 
-        print(students)
-        print(student_reports)
         context = {
             'students': students,
             'student_reports': student_reports
@@ -630,6 +635,33 @@ def approve_student_task(request, student_id, id):
     task = TaskList.objects.get(id=id)
     task.is_current = True
     task.is_employee_accepted = True
+    task.finish_report = True
+    task.save()
+
+    return redirect('/employee_report')
+
+def disapprove_student_task(request, student_id, id):
+    username = request.user.username
+    employee = CustomUser.objects.get(username=username)
+    user = CustomUser.objects.get(id=student_id)
+
+    # date_today = dt.date.today()
+    # if date_today > user.previous_day and user.is_switch == False:
+    #     current_switch = TaskList.objects.filter(
+    #         user=user, is_current=True, is_employee_accepted=True
+    #     )
+
+    #     user.is_switch = True
+    #     user.save()
+    #     for current in current_switch:
+    #         current.is_current = False
+    #         current.save()
+
+
+    task = TaskList.objects.get(id=id)
+    task.is_current = True
+    task.is_employee_accepted = False
+    task.finish_report = True
     task.save()
 
     return redirect('/employee_report')
@@ -660,6 +692,7 @@ def approve_student_all(request, id):
     for task in tasks:
         task.is_current = True
         task.is_employee_accepted = True
+        task.finish_report = True
         task.save()
 
     return redirect('/employee_report')
@@ -777,13 +810,11 @@ def success_employee_approval(request, uid, token):
         else:
             if user is not None and account_activation_token.check_token(user, token):
                 user.is_student_approve = True
+                user.finish_approval = True
                 user.save()
-
-                print('HEllo')
             
                 return render(request, 'success/employee_approval_success.html')
             else:
-                print('failed')
                 return render(request, 'errors/employee_approval_failed.html')
 
             return redirect('/employee-home')
@@ -980,11 +1011,7 @@ def section(request):
             return redirect('/student-dashboard')
     elif request.method == 'GET':
         sections = Section.objects.filter(school_name=user.school_name)
-        print(sections)
-        for section in sections:
-            print(section.students.all(
-
-            ))
+   
         context = {
             'sections': sections
         }
@@ -1103,3 +1130,9 @@ def admin_logout(request):
     auth.logout(request)
     return redirect('/admin-panel')
 
+
+
+def login_home(request):
+    return render(request,'blog/login_home.html')
+
+    

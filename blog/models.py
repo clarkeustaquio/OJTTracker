@@ -28,6 +28,7 @@ class TaskList(models.Model):
 
     is_send = models.BooleanField(default=False)
     is_employee_accepted = models.BooleanField(default=False)
+    finish_report = models.BooleanField(default=False)
 
     is_current = models.BooleanField(default=False)
 

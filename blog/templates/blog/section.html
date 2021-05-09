@@ -10,7 +10,7 @@
                 <form action="{% url 'section' %}" method="POST">
                     {% csrf_token %}
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Section name" name="section_name">
+                        <input type="text" class="form-control" placeholder="Section name" name="section_name" required>
                         <button type="submit" class="btn btn-primary" type="button">Add Section</button>
                     </div>
                 </form>
@@ -18,10 +18,12 @@
         </div>
         <hr></hr>
         {% for section in sections %}
-            <form action="{% url 'delete_section' section.id %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger float-right mb-3">Delete Section</button>
-            </form>
+            {% if section.students.all|length == 0 %}
+                <form action="{% url 'delete_section' section.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger float-right mb-3">Delete Section</button>
+                </form>
+            {% endif %}
             
             <h5 class="font-weight-bold">{{ section.section_name }} - {{ section.section_code }}</h5>
             

@@ -32,6 +32,8 @@ class CustomUser(AbstractUser):
 
     # Student - Employee
     is_student_approve = models.BooleanField(default=False)
+    finish_approval = models.BooleanField(default=False)
+    
     employer_student = models.ManyToManyField("self", blank=True)
 
     # Teacher - Student

@@ -1,9 +1,9 @@
 {% extends 'blog/user_base.html' %}
 {% block title %}Admin{% endblock title %}
 {% block content %}
-    <nav class="navbar navbar-light bg-light">
+     <nav class="navbar navbar-light bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'admin_panel' %}">OJTTracker - Admin</a>
+            <a class="navbar-brand text-white" href="{% url 'admin_panel' %}"><img style="width:10%; " src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png"> OJTTracker - Admin</a>
         </div>
     </nav>
 
@@ -24,7 +24,7 @@
                 <label>Your Password</label>
                 <input class="form-control" type="password" name="password" placeholder="*****"/>
             </div> 
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-outline-primary btn-block">Login</button>
         </form>
     </div>
 {% endblock content %}

@@ -9,16 +9,16 @@
   <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 {% endblock script %}
 {% block content %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+ <nav class="navbar navbar-light bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'admin_panel' %}">OJTTracker</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <a class="navbar-brand text-white" href="{% url 'admin_panel' %}"><img style="width:10%; " src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png">OJTTracker</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+   
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            
                 <div class="navbar-nav mr-auto"></div>
                 <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="/admin-logout">Logout</a>
+                    <a class="nav-link active text-white" aria-current="page" href="/admin-logout">Logout</a>
                 </div>
             </div>
         </div>
@@ -75,12 +75,12 @@
             <input type="submit" class="btn btn-primary"  value="Create"/>
         </form>
 
-        <table id="admin" class="table table-striped dt-responsive">
-            <thead class="bg-dark text-white">
+        <table id="admin" class="table table-bordered dt-responsive text-center">
+            <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
                   <th scope="col">Username</th>
                   <th scope="col">Email</th>
                 </tr>

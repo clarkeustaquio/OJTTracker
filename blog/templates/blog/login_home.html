@@ -1,0 +1,263 @@
+<head>
+<title>OJT Tracker NEU</title>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'blog/registration.css' %}"> {% endcomment %}
+<link rel = "icon" href = "media/pics/neulogo.png"> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+@-webkit-keyframes slidein {
+  0% {
+    top: -400px;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    top: 0px;
+  }
+}
+@keyframes slidein {
+  0% {
+    top: -400px;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    top: 0px;
+  }
+}
+@-webkit-keyframes slideout {
+  0% {
+    top: 0;
+    opacity: 1;
+  }
+  100% {
+    top: -400px;
+    opacity: 0;
+  }
+}
+@keyframes slideout {
+  0% {
+    top: 0;
+    opacity: 1;
+  }
+  100% {
+    top: -400px;
+    opacity: 0;
+  }
+}
+body {
+ background: -webkit-linear-gradient(left,#5f788a, #00c6ff);
+  font-family: "Tahoma";
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+body #scene {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: 1000px;
+  height: 400px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+}
+body #scene #left-zone {
+  background: #fff;
+  height: 75%;
+  flex-grow: 0;
+  display: flex;
+  width: 350px;
+  align-items: center;
+  justify-content: left;
+}
+body #scene #left-zone .list {
+  display: flex;
+  list-style: none;
+  align-content: stretch;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 0;
+  padding: 0;
+}
+body #scene #left-zone .list li.item input[type=radio] {
+  display: none;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ label {
+  display: block;
+  opacity: 0.5;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ label:first-letter {
+  text-transform: uppercase;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ label:hover {
+  opacity: 0.75;
+  cursor: pointer;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ label.label_strawberry:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  margin-left: 15px;
+ background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Student_icon.svg/1024px-Student_icon.svg.png");
+  background-position: center;
+  background-size: 75% 75%;
+  background-repeat: no-repeat;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ label.label_banana:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  margin-left: 15px;
+  
+   background-image: url("https://www.pngrepo.com/download/190758/teacher.png");
+  background-position: center;
+  background-size: 75% 75%;
+  background-repeat: no-repeat;
+}
+
+body #scene #left-zone .list li.item input[type=radio] ~ .content {
+  position: absolute;
+  left: 350px;
+  top: -400px;
+  width: 650px;
+  height: 400px;
+  -webkit-animation-duration: 0.75s;
+          animation-duration: 0.75s;
+  -webkit-animation-name: slideout;
+          animation-name: slideout;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ .content.content_strawberry .picto {
+  height: 100px;
+  width: 100px;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Student_icon.svg/1024px-Student_icon.svg.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ .content.content_strawberry h1 {
+  color: #3483eb;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ .content.content_banana .picto {
+  height: 100px;
+  width: 100px;
+  
+  background-image: url("https://www.pngrepo.com/download/190758/teacher.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ .content.content_banana h1 {
+  color: #3483eb;
+}
+
+body #scene #left-zone .list li.item input[type=radio] ~ .content h1:first-letter {
+  text-transform: uppercase;
+}
+body #scene #left-zone .list li.item input[type=radio] ~ .content p {
+  max-width: 50%;
+  text-align: center;
+}
+body #scene #left-zone .list li.item input[type=radio]:checked ~ label {
+  opacity: 1;
+  -webkit-animation: all 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+          animation: all 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+body #scene #left-zone .list li.item input[type=radio]:checked ~ label.label_strawberry {
+  color: #3483eb;
+  border-right: solid 4px #3483eb;
+}
+body #scene #left-zone .list li.item input[type=radio]:checked ~ label.label_banana {
+  color: #3483eb;
+  border-right: solid 4px #3483eb;
+}
+body #scene #left-zone .list li.item input[type=radio]:checked ~ .content {
+  -webkit-animation-duration: 0.75s;
+          animation-duration: 0.75s;
+  -webkit-animation-name: slidein;
+          animation-name: slidein;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+          animation-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+body #scene #middle-border {
+  background-color: #eee;
+  height: 75%;
+  flex-grow: 1;
+  max-width: 2px;
+  z-index: 0;
+}
+body #scene #right-zone {
+  background: #fff;
+  height: 100%;
+  flex-grow: 3;
+}
+</style>
+</head>
+<body>
+
+  <div id="scene">
+  
+    <div id="left-zone">
+    
+      <ul class="list">
+      <li class="item">
+      <div style="margin-left:5%;margin-bottom:10%">
+      <img class="rounded mx-auto d-block" style="width:180px;" src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png"/>
+           <h3 style="margin-left:27.5%">OJT Tracker </h3>
+                      </div>
+        
+                      
+          <input type="radio" id="radio_The garden strawberry (or simply strawberry /ˈstrɔːbᵊri/; Fragaria × ananassa) is a widely grown hybrid species of the genus Fragaria (collectively known as the strawberries)" name="basic_carousel" value="The garden strawberry (or simply strawberry /ˈstrɔːbᵊri/; Fragaria × ananassa) is a widely grown hybrid species of the genus Fragaria (collectively known as the strawberries)" checked="checked"/>
+          <label class="label_strawberry" for="radio_The garden strawberry (or simply strawberry /ˈstrɔːbᵊri/; Fragaria × ananassa) is a widely grown hybrid species of the genus Fragaria (collectively known as the strawberries)">Student</label>
+          <div class="content content_strawberry"><span class="picto"></span>
+            <h1>Student </h1>
+            <p>Submit Reports To The Company & View The Status Of Your On-The-Job Training</p>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <a type="button" class="btn btn-primary"  href="{% url 'registration_student' %}" ><div style="color:whitesmoke">Register</div></a>
+              <a type="button" class="btn btn-primary"  href="{% url 'login' %}"><div style="color:whitesmoke">Login</div></a>
+            </div>
+          </div>
+        </li>
+        <li class="item">
+          <input type="radio" id="radio_A banana is an edible fruit, botanically a berry, produced by several kinds of large herbaceous flowering plants in the genus Musa." name="basic_carousel" value="A banana is an edible fruit, botanically a berry, produced by several kinds of large herbaceous flowering plants in the genus Musa."/>
+          <label class="label_banana" for="radio_A banana is an edible fruit, botanically a berry, produced by several kinds of large herbaceous flowering plants in the genus Musa.">Teacher</label>
+          <div class="content content_banana"><span class="picto"></span>
+            <h1>Teacher </h1>
+            <p>View Status Of Your Students' On-The-Job Training</p>
+             <div class="btn-group" role="group" aria-label="Basic example">
+         <a type="button" class="btn btn-primary"  href="{% url 'registration_dean' %}" ><div style="color:whitesmoke">Register</div></a>
+              <a type="button" class="btn btn-primary"  href="{% url 'logindean' %}"><div style="color:whitesmoke">Login</div></a>
+            </div>
+          </div>
+        </li>
+        
+      </ul>
+    </div>
+    <div id="middle-border"></div>
+    
+    <div id="right-zone"></div>
+    
+  </div>
+</body>

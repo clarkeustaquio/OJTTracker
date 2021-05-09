@@ -29,7 +29,7 @@ img{
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">OJT Task <img src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png" alt="" style="width:7%"></h5>
+        <h5 class="modal-title" id="exampleModalLabel">OJT Task <img src="https://pics.freeicons.io/uploads/icons/png/15335374531580282645-512.png" alt="" style="width:7%"></h5>
         <button data-dismiss="modal" class= "btn btn-outline-dark"><i class="fas fa-times "></i></button>
       </div>
       <div class="modal-body">
@@ -92,26 +92,32 @@ img{
            
                
                    
-<h3 class="display-5 text-info"><img src="http://www.neu.edu.ph/ccs/wp-content/uploads/2017/04/cropped-ccslogo.png" alt="" style="width:4%">
+<h3 class="display-5 text-info"><img src="https://pics.freeicons.io/uploads/icons/png/15335374531580282645-512.png" alt="" style="width:4%">
                         Task Done Today  
                         <!-- Button trigger modal -->
 <button class="btn btn-info rounded-circle" data-toggle="modal" data-target="#exampleModal">
  <i class="fas fa-folder-plus"></i>
 </button>
 {% if not request.user.is_send %}
-  <form action="{% url 'submit_report' %}" method="POST" class="float-right">
-    {% csrf_token %}
-    <button class="btn btn-info bg-steel">Submit Report</button>
-  </form>
+  {% if task_count > 0 %}
+      <form action="{% url 'submit_report' %}" method="POST" class="float-right">
+        {% csrf_token %}
+        <button class="btn btn-info bg-steel">Submit Report</button>
+      </form>
+  {% endif %}
 {% endif %}
 </h3>
                     
                    
                               
+{% for message in messages %}
+  <div class="alert alert-warning" role="alert">
+    {{ message }}
+  </div>
+{% endfor %}
 
-                                            
-                                                                                
-                                                                         
+
+                                                                                                           
 <table class="table table-hover table-light" style="margin-top:3%">
   <thead>
     <tr>
